@@ -1,0 +1,290 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #191919;
+  --bg-elevated: #2f2f2f;
+  --text: #ebebeb;
+  --text-muted: #9a9a9a;
+  --border: #4a4a4a;
+  --fill: #c8c8c8;
+  --check: #4a7fd4;
+  --max: 720px;
+}
+
+html {
+  font-size: 15px;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "IBM Plex Mono", "Courier New", monospace;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+
+.page {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 1.25rem 1.5rem 3rem;
+}
+
+.top-greeting {
+  margin: 0 0 0.75rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
+
+/* Header */
+.profile-header {
+  position: relative;
+  margin-bottom: 0.5rem;
+}
+
+.banner {
+  height: 160px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #111;
+}
+
+.banner-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 55%;
+  display: block;
+  filter: contrast(1.2) saturate(1.15) brightness(0.95);
+  transform: scale(1.05);
+}
+
+.avatar {
+  position: absolute;
+  left: 0;
+  bottom: -28px;
+  width: 88px;
+  height: 88px;
+  border-radius: 6px;
+  object-fit: cover;
+  border: 3px solid var(--bg);
+  background: #000;
+}
+
+/* Username */
+.username {
+  margin: 2.25rem 0 1rem;
+  font-family: "Syne", "IBM Plex Mono", sans-serif;
+  font-size: clamp(2rem, 8vw, 2.75rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.username .pipe {
+  color: var(--text-muted);
+  font-weight: 700;
+  margin-right: 0.15em;
+}
+
+/* Quote */
+.quote {
+  margin: 0 0 1.75rem;
+  padding: 0.85rem 1rem;
+  background: var(--bg-elevated);
+  border-radius: 6px;
+  border: none;
+}
+
+.quote p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+/* Grid */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem 2.5rem;
+  align-items: start;
+}
+
+@media (max-width: 560px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+/* Counter */
+.counter {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 1.75rem;
+}
+
+.counter-value {
+  display: block;
+  font-size: clamp(1.5rem, 5vw, 2rem);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.counter-label {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+
+/* Contents */
+.section-title {
+  margin: 0 0 0.65rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.moon {
+  margin-right: 0.25rem;
+}
+
+.contents-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.contents-list li {
+  margin-bottom: 0.35rem;
+  font-size: 0.88rem;
+}
+
+.contents-list a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.contents-list a:hover {
+  text-decoration: underline;
+}
+
+/* Progress */
+.progress-group {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.progress-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.progress-track {
+  flex: 1;
+  height: 14px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+  background: transparent;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--fill);
+  border-radius: 1px;
+  width: 0%;
+  transition: width 0.4s ease;
+}
+
+.progress-label {
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  min-width: 9rem;
+  text-align: right;
+}
+
+/* Todo */
+.pipe-title {
+  margin-bottom: 0.75rem;
+}
+
+.todo-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.todo-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.45rem;
+  font-size: 0.9rem;
+}
+
+.checkbox {
+  width: 15px;
+  height: 15px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  flex-shrink: 0;
+  position: relative;
+  background: transparent;
+}
+
+.checkbox.checked {
+  background: var(--check);
+  border-color: var(--check);
+}
+
+.checkbox.checked::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 1px;
+  width: 5px;
+  height: 9px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.todo-item.done .todo-text {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+.hope {
+  margin: 1rem 0 0.75rem;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+.bottom-photo {
+  margin: 0;
+}
+
+.bottom-photo img {
+  display: block;
+  width: 100%;
+  max-width: 280px;
+  height: auto;
+  border-radius: 6px;
+  object-fit: cover;
+}

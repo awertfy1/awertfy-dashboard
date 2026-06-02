@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>awertfy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="page">
+    <p class="top-greeting">welcome my friend</p>
+
+    <header class="profile-header">
+      <div class="banner">
+        <img src="assets/banner.png" alt="" class="banner-img" />
+      </div>
+      <img src="assets/avatar.png" alt="" class="avatar" width="88" height="88" />
+    </header>
+
+    <h1 class="username"><span class="pipe">|</span>awertfy</h1>
+
+    <blockquote class="quote">
+      <p>Walk forward and look up</p>
+    </blockquote>
+
+    <main class="grid">
+      <section class="col col-left">
+        <div class="counter" id="counter" aria-live="polite">
+          <div class="counter-unit">
+            <span class="counter-value" id="months">0</span>
+            <span class="counter-label">months</span>
+          </div>
+          <div class="counter-unit">
+            <span class="counter-value" id="days">0</span>
+            <span class="counter-label">days</span>
+          </div>
+          <div class="counter-unit">
+            <span class="counter-value" id="minutes">0</span>
+            <span class="counter-label">minutes</span>
+          </div>
+          <div class="counter-unit">
+            <span class="counter-value" id="seconds">0</span>
+            <span class="counter-label">seconds</span>
+          </div>
+        </div>
+
+        <div class="contents-block">
+          <h2 class="section-title"><span class="moon">☾</span> contents:</h2>
+          <ul class="contents-list">
+            <li>
+              <a href="https://t.me/awertfy" target="_blank" rel="noopener noreferrer">|telegram @awertfy</a>
+            </li>
+            <li><span>|balance : 0$</span></li>
+            <li><span>|happiness</span></li>
+            <li><span>|aspiration</span></li>
+            <li><span>|search</span></li>
+            <li>
+              <a href="https://music.yandex.ru/playlists/lk.5f6472e1-83b2-4dea-b396-37c7a08ac667?utm_source=desktop&utm_medium=copy_link" target="_blank" rel="noopener noreferrer">|music</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="progress-group">
+          <div class="progress-row">
+            <div class="progress-track">
+              <div class="progress-fill" id="year-fill"></div>
+            </div>
+            <span class="progress-label" id="year-label">Year: 0%</span>
+          </div>
+          <div class="progress-row">
+            <div class="progress-track">
+              <div class="progress-fill" id="day-fill"></div>
+            </div>
+            <span class="progress-label" id="day-label">Day: 0 / 29220</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="col col-right">
+        <h2 class="section-title pipe-title">|things to do</h2>
+        <ul class="todo-list">
+          <li class="todo-item done">
+            <span class="checkbox checked" aria-hidden="true"></span>
+            <span class="todo-text">study</span>
+          </li>
+          <li class="todo-item">
+            <span class="checkbox" aria-hidden="true"></span>
+            <span class="todo-text">clean room</span>
+          </li>
+          <li class="todo-item">
+            <span class="checkbox" aria-hidden="true"></span>
+            <span class="todo-text">work</span>
+          </li>
+          <li class="todo-item">
+            <span class="checkbox" aria-hidden="true"></span>
+            <span class="todo-text">driving</span>
+          </li>
+        </ul>
+        <figure class="bottom-photo">
+          <img src="assets/bottom.png" alt="" width="320" height="480" />
+        </figure>
+      </section>
+    </main>
+  </div>
+  <script src="js/main.js"></script>
+</body>
+</html>
