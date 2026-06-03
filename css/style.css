@@ -219,14 +219,12 @@ body {
   letter-spacing: -0.02em;
 }
 
-/* Links — two columns */
+/* Links */
 .links-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: repeat(5, auto);
-  gap: 0.4rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
   margin-bottom: 1.5rem;
-  align-items: center;
 }
 
 .link-item {
@@ -236,13 +234,6 @@ body {
   line-height: 1.4;
 }
 
-.link-item:nth-child(1) { grid-column: 1; grid-row: 1; }
-.link-item:nth-child(2) { grid-column: 1; grid-row: 2; }
-.link-item:nth-child(3) { grid-column: 1; grid-row: 3; }
-.link-item:nth-child(4) { grid-column: 2; grid-row: 3; }
-.link-item:nth-child(5) { grid-column: 2; grid-row: 4; }
-.link-item:nth-child(6) { grid-column: 2; grid-row: 5; }
-
 .link-item a {
   color: var(--text);
   text-decoration: none;
@@ -250,18 +241,6 @@ body {
 
 .link-item a:hover {
   text-decoration: underline;
-}
-
-@media (max-width: 560px) {
-  .links-grid {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto;
-  }
-
-  .link-item:nth-child(n) {
-    grid-column: 1;
-    grid-row: auto;
-  }
 }
 
 .section-title {
@@ -370,24 +349,51 @@ body {
 }
 
 /* Photo — right column */
+.col-right {
+  display: flex;
+  flex-direction: column;
+}
+
+.side-column {
+  width: 100%;
+  max-width: 280px;
+  margin-top: auto;
+}
+
 .side-photo {
   margin: 0;
-  height: 100%;
 }
 
 .side-photo img {
   display: block;
   width: 100%;
-  max-width: 280px;
-  height: auto;
   border-radius: 6px;
   object-fit: cover;
   filter: contrast(1.28) saturate(0.55) brightness(0.86) hue-rotate(4deg);
 }
 
-@media (min-width: 561px) {
-  .col-right {
-    display: flex;
-    justify-content: flex-start;
+.side-links {
+  list-style: none;
+  margin: 0.55rem 0 0;
+  padding: 0;
+  text-align: right;
+}
+
+.side-links li {
+  margin-bottom: 0.35rem;
+  font-size: 0.88rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+}
+
+@media (max-width: 560px) {
+  .side-column {
+    margin-top: 0;
+    max-width: 100%;
+  }
+
+  .side-links {
+    text-align: left;
   }
 }
