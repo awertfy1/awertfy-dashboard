@@ -51,7 +51,6 @@ body {
 
 /* Header */
 .profile-header {
-  position: relative;
   margin-bottom: 0;
 }
 
@@ -72,22 +71,27 @@ body {
   transform: scale(1.12);
 }
 
+.profile-row {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin: 1rem 0 1rem;
+}
+
 .avatar {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 88px;
-  height: 88px;
+  width: 72px;
+  height: 72px;
   border-radius: 6px;
   object-fit: cover;
   border: 3px solid var(--bg);
   background: #000;
+  flex-shrink: 0;
   filter: contrast(1.15) saturate(0.85) brightness(0.92);
 }
 
 /* Username — Syne unchanged */
 .username {
-  margin: 1.15rem 0 1rem;
+  margin: 0;
   font-family: "Syne", "Space Grotesk", sans-serif;
   font-size: clamp(2rem, 8vw, 2.75rem);
   font-weight: 800;
@@ -131,15 +135,21 @@ body {
   }
 }
 
-.quote-author {
-  display: block;
-  margin-top: 0.5rem;
+.quote-author-line {
+  margin: 0.5rem 0 0;
   font-size: 0.75rem;
   font-weight: 500;
-  font-style: normal;
   color: var(--text-muted);
   letter-spacing: 0.04em;
   min-height: 1.1rem;
+}
+
+.author-cursor {
+  display: none;
+}
+
+.author-cursor.active {
+  display: inline;
 }
 
 /* Grid */
@@ -223,7 +233,7 @@ body {
 .links-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: repeat(5, auto);
+  grid-template-rows: repeat(6, auto);
   gap: 0.4rem 1.5rem;
   margin-bottom: 1.5rem;
   align-items: center;
@@ -239,9 +249,10 @@ body {
 .link-item:nth-child(1) { grid-column: 1; grid-row: 1; }
 .link-item:nth-child(2) { grid-column: 1; grid-row: 2; }
 .link-item:nth-child(3) { grid-column: 1; grid-row: 3; }
-.link-item:nth-child(4) { grid-column: 2; grid-row: 3; }
-.link-item:nth-child(5) { grid-column: 2; grid-row: 4; }
-.link-item:nth-child(6) { grid-column: 2; grid-row: 5; }
+.link-item:nth-child(4) { grid-column: 1; grid-row: 4; }
+.link-item:nth-child(5) { grid-column: 2; grid-row: 3; }
+.link-item:nth-child(6) { grid-column: 2; grid-row: 4; }
+.link-item:nth-child(7) { grid-column: 2; grid-row: 5; }
 
 .link-item a {
   color: var(--text);
@@ -378,7 +389,7 @@ body {
 .side-photo img {
   display: block;
   width: 100%;
-  max-width: 280px;
+  max-width: 240px;
   height: auto;
   border-radius: 6px;
   object-fit: cover;
