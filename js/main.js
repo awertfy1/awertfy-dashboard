@@ -34,69 +34,23 @@
   var dayLabel = document.getElementById("day-label");
   var quoteTextEl = document.getElementById("quote-text");
   var quoteAuthorEl = document.getElementById("quote-author");
+  var authorCursorEl = document.querySelector(".author-cursor");
   var balanceEl = document.getElementById("balance-value");
 
   function randomBalance() {
-    return Math.floor(Math.random() * 996) + 5;
-  }
-
-  function scrollBalance(from, to, done) {
-    if (!balanceEl) {
-      if (done) done();
-      return;
-    }
-
-    var step = 0;
-    var totalSteps = 32;
-
-    function tickBalance() {
-      step += 1;
-      var progress = step / totalSteps;
-
-      if (progress >= 1) {
-        balanceEl.textContent = to;
-        if (done) done();
-        return;
-      }
-
-      if (progress > 0.72) {
-        var eased = (progress - 0.72) / 0.28;
-        balanceEl.textContent = Math.round(from + (to - from) * eased);
-      } else {
-        balanceEl.textContent = randomBalance();
-      }
-
-      setTimeout(tickBalance, 38 + step * 2);
-    }
-
-    tickBalance();
+    var n;
+    do {
+      n = Math.floor(Math.random() * 996) + 5;
+    } while (balanceEl && parseInt(balanceEl.textContent, 10) === n);
+    return n;
   }
 
   function startBalanceLoop() {
     if (!balanceEl) return;
 
-    var values = [15, 990, 350];
-    var index = 0;
-
-    function nextBalance() {
-      var from = parseInt(balanceEl.textContent, 10) || values[0];
-      var to;
-
-      if (index < values.length) {
-        to = values[index];
-        index += 1;
-      } else {
-        do {
-          to = randomBalance();
-        } while (to === from);
-      }
-
-      scrollBalance(from, to, function () {
-        setTimeout(nextBalance, 2200);
-      });
-    }
-
-    setTimeout(nextBalance, 1200);
+    setInterval(function () {
+      balanceEl.textContent = randomBalance();
+    }, 4000);
   }
 
   function pad(n) {
@@ -164,9 +118,10 @@
 
     var order = shuffle(QUOTES);
     var index = 0;
-    var typing = true;
+    var phase = "type-quote";
     var charIndex = 0;
     var currentQuote = order[0];
+    var authorFull = "";
     var pauseUntil = 0;
 
     function nextQuote() {
@@ -176,11 +131,15 @@
         index = 0;
       }
       currentQuote = order[index];
+      authorFull = "— " + currentQuote.author;
       charIndex = 0;
-      typing = true;
+      phase = "type-quote";
       quoteAuthorEl.textContent = "";
       quoteTextEl.textContent = "";
+      if (authorCursorEl) authorCursorEl.classList.remove("active");
     }
+
+    authorFull = "— " + currentQuote.author;
 
     function stepQuotes() {
       var now = Date.now();
@@ -189,23 +148,46 @@
         return;
       }
 
-      if (typing) {
+      if (phase === "type-quote") {
         if (charIndex < currentQuote.text.length) {
           quoteTextEl.textContent += currentQuote.text.charAt(charIndex);
           charIndex += 1;
           pauseUntil = now + 35 + Math.random() * 25;
         } else {
-          quoteAuthorEl.textContent = "— " + currentQuote.author;
-          typing = false;
-          pauseUntil = now + 3000;
+          phase = "type-author";
+          charIndex = 0;
+          if (authorCursorEl) authorCursorEl.classList.add("active");
         }
-      } else if (quoteTextEl.textContent.length > 0) {
-        quoteTextEl.textContent = quoteTextEl.textContent.slice(0, -1);
-        quoteAuthorEl.textContent = "";
-        pauseUntil = now + 16 + Math.random() * 10;
-      } else {
-        nextQuote();
-        pauseUntil = now + 400;
+      } else if (phase === "type-author") {
+        if (charIndex < authorFull.length) {
+          quoteAuthorEl.textContent += authorFull.charAt(charIndex);
+          charIndex += 1;
+          pauseUntil = now + 30 + Math.random() * 20;
+        } else {
+          phase = "pause";
+          if (authorCursorEl) authorCursorEl.classList.remove("active");
+          pauseUntil = now + 2800;
+        }
+      } else if (phase === "pause") {
+        phase = "delete-author";
+        charIndex = quoteAuthorEl.textContent.length;
+        if (authorCursorEl) authorCursorEl.classList.add("active");
+      } else if (phase === "delete-author") {
+        if (quoteAuthorEl.textContent.length > 0) {
+          quoteAuthorEl.textContent = quoteAuthorEl.textContent.slice(0, -1);
+          pauseUntil = now + 14 + Math.random() * 10;
+        } else {
+          phase = "delete-quote";
+          if (authorCursorEl) authorCursorEl.classList.remove("active");
+        }
+      } else if (phase === "delete-quote") {
+        if (quoteTextEl.textContent.length > 0) {
+          quoteTextEl.textContent = quoteTextEl.textContent.slice(0, -1);
+          pauseUntil = now + 14 + Math.random() * 10;
+        } else {
+          nextQuote();
+          pauseUntil = now + 400;
+        }
       }
 
       requestAnimationFrame(stepQuotes);
