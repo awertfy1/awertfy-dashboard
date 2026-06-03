@@ -5,8 +5,15 @@
   var LIFE_END = new Date(2087, 10, 22, 0, 0, 0, 0);
   var MS_PER_DAY = 24 * 60 * 60 * 1000;
   var TOTAL_DAYS = Math.floor((LIFE_END - BIRTH) / MS_PER_DAY);
-  var ANALYSIS_VALUE = 36;
+  var ANALYSIS_ANCHOR_YEAR = 2026;
+  var ANALYSIS_ANCHOR_VALUE = 36;
   var ANALYSIS_MAX = 100;
+
+  function getAnalysisValue(now) {
+    var yearsPassed = now.getFullYear() - ANALYSIS_ANCHOR_YEAR;
+    var value = ANALYSIS_ANCHOR_VALUE + yearsPassed;
+    return Math.max(0, Math.min(ANALYSIS_MAX, value));
+  }
 
   var QUOTES = [
     { text: "The unexamined life is not worth living.", author: "Socrates" },
@@ -120,15 +127,16 @@
     var now = new Date();
     var parts = diffParts(BIRTH, now);
     var life = lifeProgress(now);
+    var analysis = getAnalysisValue(now);
 
     elMonths.textContent = pad(parts.months);
     elDays.textContent = pad(parts.days);
     elMinutes.textContent = pad(parts.minutes);
     elSeconds.textContent = pad(parts.seconds);
 
-    if (yearFill) yearFill.style.width = ANALYSIS_VALUE + "%";
+    if (yearFill) yearFill.style.width = analysis + "%";
     if (dayFill) dayFill.style.width = ((life.daysElapsed / TOTAL_DAYS) * 100).toFixed(1) + "%";
-    if (yearLabel) yearLabel.textContent = "analysis ( " + ANALYSIS_VALUE + " из " + ANALYSIS_MAX + " )";
+    if (yearLabel) yearLabel.textContent = "Analysis " + analysis + "/" + ANALYSIS_MAX;
     if (dayLabel) dayLabel.textContent = "Day: " + life.daysElapsed + " / " + TOTAL_DAYS;
   }
 
