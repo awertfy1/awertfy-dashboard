@@ -1,10 +1,12 @@
 (function () {
-  const BIRTH = new Date(2007, 10, 22, 0, 0, 0, 0);
-  const LIFE_END = new Date(2087, 10, 22, 0, 0, 0, 0);
-  const MS_PER_DAY = 24 * 60 * 60 * 1000;
-  const TOTAL_DAYS = Math.floor((LIFE_END - BIRTH) / MS_PER_DAY);
+  "use strict";
 
-  const QUOTES = [
+  var BIRTH = new Date(2007, 10, 22, 0, 0, 0, 0);
+  var LIFE_END = new Date(2087, 10, 22, 0, 0, 0, 0);
+  var MS_PER_DAY = 24 * 60 * 60 * 1000;
+  var TOTAL_DAYS = Math.floor((LIFE_END - BIRTH) / MS_PER_DAY);
+
+  var QUOTES = [
     { text: "The unexamined life is not worth living.", author: "Socrates" },
     { text: "He who has a why to live can bear almost any how.", author: "Friedrich Nietzsche" },
     { text: "We suffer more often in imagination than in reality.", author: "Seneca" },
@@ -22,127 +24,135 @@
     { text: "Be the change you wish to see in the world.", author: "Mahatma Gandhi" },
   ];
 
-  const elMonths = document.getElementById("months");
-  const elDays = document.getElementById("days");
-  const elMinutes = document.getElementById("minutes");
-  const elSeconds = document.getElementById("seconds");
-  const yearFill = document.getElementById("year-fill");
-  const dayFill = document.getElementById("day-fill");
-  const yearLabel = document.getElementById("year-label");
-  const dayLabel = document.getElementById("day-label");
-  const quoteText = document.getElementById("quote-text");
-  const quoteAuthor = document.getElementById("quote-author");
+  var elMonths = document.getElementById("months");
+  var elDays = document.getElementById("days");
+  var elMinutes = document.getElementById("minutes");
+  var elSeconds = document.getElementById("seconds");
+  var yearFill = document.getElementById("year-fill");
+  var dayFill = document.getElementById("day-fill");
+  var yearLabel = document.getElementById("year-label");
+  var dayLabel = document.getElementById("day-label");
+  var quoteTextEl = document.getElementById("quote-text");
+  var quoteAuthorEl = document.getElementById("quote-author");
 
   function pad(n) {
     return String(n);
   }
 
   function diffParts(from, to) {
-    let months =
+    var months =
       (to.getFullYear() - from.getFullYear()) * 12 +
       (to.getMonth() - from.getMonth());
     if (to.getDate() < from.getDate()) months -= 1;
 
-    const afterMonths = new Date(from);
+    var afterMonths = new Date(from.getTime());
     afterMonths.setMonth(afterMonths.getMonth() + months);
 
-    let remainMs = to - afterMonths;
-    const days = Math.floor(remainMs / (24 * 60 * 60 * 1000));
-    remainMs -= days * 24 * 60 * 60 * 1000;
-    const minutes = Math.floor(remainMs / (60 * 1000));
+    var remainMs = to - afterMonths;
+    var days = Math.floor(remainMs / MS_PER_DAY);
+    remainMs -= days * MS_PER_DAY;
+    var minutes = Math.floor(remainMs / (60 * 1000));
     remainMs -= minutes * 60 * 1000;
-    const seconds = Math.floor(remainMs / 1000);
+    var seconds = Math.floor(remainMs / 1000);
 
-    return { months, days, minutes, seconds };
+    return { months: months, days: days, minutes: minutes, seconds: seconds };
   }
 
   function lifeProgress(now) {
-    const totalMs = LIFE_END - BIRTH;
-    const elapsedMs = Math.max(0, Math.min(now - BIRTH, totalMs));
-    const pct = (elapsedMs / totalMs) * 100;
-    const daysElapsed = Math.max(0, Math.min(Math.floor(elapsedMs / MS_PER_DAY), TOTAL_DAYS));
-
-    return { pct, daysElapsed };
+    var totalMs = LIFE_END - BIRTH;
+    var elapsedMs = Math.max(0, Math.min(now - BIRTH, totalMs));
+    var pct = (elapsedMs / totalMs) * 100;
+    var daysElapsed = Math.max(0, Math.min(Math.floor(elapsedMs / MS_PER_DAY), TOTAL_DAYS));
+    return { pct: pct, daysElapsed: daysElapsed };
   }
 
   function tick() {
-    const now = new Date();
-    const parts = diffParts(BIRTH, now);
-    const life = lifeProgress(now);
+    if (!elMonths) return;
+
+    var now = new Date();
+    var parts = diffParts(BIRTH, now);
+    var life = lifeProgress(now);
 
     elMonths.textContent = pad(parts.months);
     elDays.textContent = pad(parts.days);
     elMinutes.textContent = pad(parts.minutes);
     elSeconds.textContent = pad(parts.seconds);
 
-    yearFill.style.width = life.pct.toFixed(1) + "%";
-    dayFill.style.width = ((life.daysElapsed / TOTAL_DAYS) * 100).toFixed(1) + "%";
-    yearLabel.textContent = "Year: " + Math.round(life.pct) + "%";
-    dayLabel.textContent = "Day: " + life.daysElapsed + " / " + TOTAL_DAYS;
-  }
-
-  function wait(ms) {
-    return new Promise(function (resolve) {
-      setTimeout(resolve, ms);
-    });
+    if (yearFill) yearFill.style.width = life.pct.toFixed(1) + "%";
+    if (dayFill) dayFill.style.width = ((life.daysElapsed / TOTAL_DAYS) * 100).toFixed(1) + "%";
+    if (yearLabel) yearLabel.textContent = "Year: " + Math.round(life.pct) + "%";
+    if (dayLabel) dayLabel.textContent = "Day: " + life.daysElapsed + " / " + TOTAL_DAYS;
   }
 
   function shuffle(arr) {
-    const copy = arr.slice();
-    for (let i = copy.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      const tmp = copy[i];
+    var copy = arr.slice();
+    for (var i = copy.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = copy[i];
       copy[i] = copy[j];
       copy[j] = tmp;
     }
     return copy;
   }
 
-  async function typeQuote(quote) {
-    quoteAuthor.textContent = "";
-    quoteText.textContent = "";
+  function startQuotes() {
+    if (!quoteTextEl || !quoteAuthorEl) return;
 
-    for (let i = 0; i < quote.text.length; i++) {
-      quoteText.textContent += quote.text[i];
-      await wait(38 + Math.random() * 22);
-    }
+    var order = shuffle(QUOTES);
+    var index = 0;
+    var typing = true;
+    var charIndex = 0;
+    var currentQuote = order[0];
+    var pauseUntil = 0;
 
-    await wait(400);
-    quoteAuthor.textContent = "— " + quote.author;
-    await wait(3200);
-  }
-
-  async function deleteQuote(quote) {
-    quoteAuthor.textContent = "";
-    let current = quote.text;
-
-    while (current.length > 0) {
-      current = current.slice(0, -1);
-      quoteText.textContent = current;
-      await wait(18 + Math.random() * 12);
-    }
-
-    await wait(500);
-  }
-
-  async function runQuotes() {
-    let order = shuffle(QUOTES);
-    let index = 0;
-
-    while (true) {
+    function nextQuote() {
+      index += 1;
       if (index >= order.length) {
         order = shuffle(QUOTES);
         index = 0;
       }
-
-      const quote = order[index];
-      index += 1;
-      await typeQuote(quote);
-      await deleteQuote(quote);
+      currentQuote = order[index];
+      charIndex = 0;
+      typing = true;
+      quoteAuthorEl.textContent = "";
+      quoteTextEl.textContent = "";
     }
+
+    function stepQuotes() {
+      var now = Date.now();
+      if (now < pauseUntil) {
+        requestAnimationFrame(stepQuotes);
+        return;
+      }
+
+      if (typing) {
+        if (charIndex < currentQuote.text.length) {
+          quoteTextEl.textContent += currentQuote.text.charAt(charIndex);
+          charIndex += 1;
+          pauseUntil = now + 35 + Math.random() * 25;
+        } else {
+          quoteAuthorEl.textContent = "— " + currentQuote.author;
+          typing = false;
+          pauseUntil = now + 3000;
+        }
+      } else if (quoteTextEl.textContent.length > 0) {
+        quoteTextEl.textContent = quoteTextEl.textContent.slice(0, -1);
+        quoteAuthorEl.textContent = "";
+        pauseUntil = now + 16 + Math.random() * 10;
+      } else {
+        nextQuote();
+        pauseUntil = now + 400;
+      }
+
+      requestAnimationFrame(stepQuotes);
+    }
+
+    quoteTextEl.textContent = "";
+    quoteAuthorEl.textContent = "";
+    requestAnimationFrame(stepQuotes);
   }
 
   tick();
   setInterval(tick, 1000);
-  runQuotes();
+  startQuotes();
 })();
