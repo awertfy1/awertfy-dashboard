@@ -136,7 +136,7 @@
 
     if (yearFill) yearFill.style.width = analysis + "%";
     if (dayFill) dayFill.style.width = ((life.daysElapsed / TOTAL_DAYS) * 100).toFixed(1) + "%";
-    if (yearLabel) yearLabel.textContent = "Analysis " + analysis + "/" + ANALYSIS_MAX;
+    if (yearLabel) yearLabel.textContent = "Analysis " + analysis + " / " + ANALYSIS_MAX;
     if (dayLabel) dayLabel.textContent = "Day: " + life.daysElapsed + " / " + TOTAL_DAYS;
   }
 

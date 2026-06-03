@@ -14,7 +14,6 @@
   --check: #4a7fd4;
   --max: 720px;
   --side-photo: 240px;
-  --progress-label-w: 9.25rem;
   --catalog-size: 0.88rem;
 }
 
@@ -143,13 +142,7 @@ body {
   }
 
   .progress-group {
-    grid-template-columns: minmax(0, 1fr) var(--progress-label-w);
     margin-top: auto;
-  }
-
-  .progress-label {
-    width: var(--progress-label-w);
-    min-width: var(--progress-label-w);
   }
 }
 
@@ -341,7 +334,8 @@ body {
 
 .todo-item {
   display: grid;
-  grid-template-columns: 16px 1fr;
+  grid-template-columns: 16px auto;
+  justify-items: start;
   align-items: center;
   gap: 0.65rem;
   font-size: var(--catalog-size);
@@ -396,6 +390,8 @@ body {
 .todo-text {
   position: relative;
   display: inline-block;
+  width: fit-content;
+  max-width: 100%;
   color: var(--text);
   transition: color 0.35s ease;
 }
@@ -424,10 +420,13 @@ body {
 .progress-group {
   margin-top: auto;
   padding-top: 1.75rem;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 0.65rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  width: 100%;
+}
+
+.progress-item {
   width: 100%;
 }
 
@@ -450,13 +449,14 @@ body {
 
 .progress-label {
   display: block;
+  margin-top: 0.35rem;
   font-size: var(--catalog-size);
   font-weight: 500;
   color: var(--text-muted);
   text-align: right;
   letter-spacing: -0.01em;
   white-space: nowrap;
-  justify-self: end;
+  width: 100%;
 }
 
 /* Photo — right column */
