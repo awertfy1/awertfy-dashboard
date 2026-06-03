@@ -5,6 +5,8 @@
   var LIFE_END = new Date(2087, 10, 22, 0, 0, 0, 0);
   var MS_PER_DAY = 24 * 60 * 60 * 1000;
   var TOTAL_DAYS = Math.floor((LIFE_END - BIRTH) / MS_PER_DAY);
+  var ANALYSIS_VALUE = 36;
+  var ANALYSIS_MAX = 100;
 
   var QUOTES = [
     { text: "The unexamined life is not worth living.", author: "Socrates" },
@@ -40,8 +42,9 @@
 
   function getCurrentBalance() {
     if (!balanceReel) return 15;
-    var num = balanceReel.querySelector(".balance-num");
-    return num ? parseInt(num.textContent, 10) : 15;
+    var nums = balanceReel.querySelectorAll(".balance-num");
+    var last = nums[nums.length - 1];
+    return last ? parseInt(last.textContent, 10) : 15;
   }
 
   function randomBalance() {
@@ -61,20 +64,21 @@
     incoming.textContent = to;
     balanceReel.insertBefore(incoming, balanceReel.firstChild);
 
-    balanceReel.classList.remove("spinning");
-    balanceReel.style.transform = "translateY(-1.25em)";
+    balanceReel.classList.remove("is-old");
+    balanceReel.classList.add("is-old");
     balanceReel.offsetHeight;
-    balanceReel.classList.add("spinning");
+    balanceReel.classList.remove("is-old");
 
     setTimeout(function () {
-      balanceReel.classList.remove("spinning");
       balanceReel.innerHTML = '<span class="balance-num">' + to + "</span>";
-      balanceReel.style.transform = "";
-    }, 560);
+    }, 580);
   }
 
   function startBalanceLoop() {
     if (!balanceReel) return;
+    setTimeout(function () {
+      spinBalance(randomBalance());
+    }, 2000);
     setInterval(function () {
       spinBalance(randomBalance());
     }, 10000);
@@ -106,9 +110,8 @@
   function lifeProgress(now) {
     var totalMs = LIFE_END - BIRTH;
     var elapsedMs = Math.max(0, Math.min(now - BIRTH, totalMs));
-    var pct = (elapsedMs / totalMs) * 100;
     var daysElapsed = Math.max(0, Math.min(Math.floor(elapsedMs / MS_PER_DAY), TOTAL_DAYS));
-    return { pct: pct, daysElapsed: daysElapsed };
+    return { daysElapsed: daysElapsed };
   }
 
   function tick() {
@@ -123,9 +126,9 @@
     elMinutes.textContent = pad(parts.minutes);
     elSeconds.textContent = pad(parts.seconds);
 
-    if (yearFill) yearFill.style.width = life.pct.toFixed(1) + "%";
+    if (yearFill) yearFill.style.width = ANALYSIS_VALUE + "%";
     if (dayFill) dayFill.style.width = ((life.daysElapsed / TOTAL_DAYS) * 100).toFixed(1) + "%";
-    if (yearLabel) yearLabel.textContent = "Year: " + Math.round(life.pct) + "%";
+    if (yearLabel) yearLabel.textContent = "analysis ( " + ANALYSIS_VALUE + " из " + ANALYSIS_MAX + " )";
     if (dayLabel) dayLabel.textContent = "Day: " + life.daysElapsed + " / " + TOTAL_DAYS;
   }
 
@@ -160,7 +163,6 @@
     var charIndex = 0;
     var currentQuote = order[0];
     var authorFull = "— " + currentQuote.author;
-    var pauseUntil = 0;
 
     function nextQuote() {
       index += 1;
@@ -179,11 +181,7 @@
     }
 
     function stepQuotes() {
-      var now = Date.now();
-      if (now < pauseUntil) {
-        requestAnimationFrame(stepQuotes);
-        return;
-      }
+      var delay = 40;
 
       if (phase === "type-quote") {
         setQuoteCursor(true);
@@ -191,12 +189,13 @@
         if (charIndex < currentQuote.text.length) {
           quoteTextEl.textContent += currentQuote.text.charAt(charIndex);
           charIndex += 1;
-          pauseUntil = now + 38 + Math.random() * 22;
+          delay = 38 + Math.random() * 22;
         } else {
           phase = "type-author";
           charIndex = 0;
           setQuoteCursor(false);
           setAuthorCursor(true);
+          delay = 200;
         }
       } else if (phase === "type-author") {
         setQuoteCursor(false);
@@ -204,47 +203,48 @@
         if (charIndex < authorFull.length) {
           quoteAuthorEl.textContent += authorFull.charAt(charIndex);
           charIndex += 1;
-          pauseUntil = now + 32 + Math.random() * 18;
+          delay = 32 + Math.random() * 18;
         } else {
           phase = "pause";
           setAuthorCursor(false);
-          pauseUntil = now + 2600;
+          delay = 2600;
         }
       } else if (phase === "pause") {
         phase = "delete-author";
-        charIndex = quoteAuthorEl.textContent.length;
         setAuthorCursor(true);
+        delay = 300;
       } else if (phase === "delete-author") {
         setQuoteCursor(false);
         setAuthorCursor(true);
         if (quoteAuthorEl.textContent.length > 0) {
           quoteAuthorEl.textContent = quoteAuthorEl.textContent.slice(0, -1);
-          pauseUntil = now + 16 + Math.random() * 12;
+          delay = 16 + Math.random() * 12;
         } else {
           phase = "delete-quote";
           setAuthorCursor(false);
           setQuoteCursor(true);
+          delay = 200;
         }
       } else if (phase === "delete-quote") {
         setQuoteCursor(true);
         setAuthorCursor(false);
         if (quoteTextEl.textContent.length > 0) {
           quoteTextEl.textContent = quoteTextEl.textContent.slice(0, -1);
-          pauseUntil = now + 16 + Math.random() * 12;
+          delay = 16 + Math.random() * 12;
         } else {
           nextQuote();
-          pauseUntil = now + 450;
+          delay = 450;
         }
       }
 
-      requestAnimationFrame(stepQuotes);
+      setTimeout(stepQuotes, delay);
     }
 
     quoteTextEl.textContent = "";
     quoteAuthorEl.textContent = "";
     setQuoteCursor(true);
     setAuthorCursor(false);
-    requestAnimationFrame(stepQuotes);
+    stepQuotes();
   }
 
   tick();
