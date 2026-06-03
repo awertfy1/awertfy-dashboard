@@ -24,7 +24,7 @@ body {
   min-height: 100vh;
   background: var(--bg);
   color: var(--text);
-  font-family: "IBM Plex Mono", "Courier New", monospace;
+  font-family: "Space Grotesk", system-ui, sans-serif;
   line-height: 1.45;
   -webkit-font-smoothing: antialiased;
 }
@@ -38,8 +38,10 @@ body {
 .top-greeting {
   margin: 0 0 0.75rem;
   font-size: 0.85rem;
+  font-weight: 500;
   color: var(--text-muted);
-  letter-spacing: 0.02em;
+  letter-spacing: 0.08em;
+  text-transform: lowercase;
 }
 
 /* Header */
@@ -49,20 +51,20 @@ body {
 }
 
 .banner {
-  height: 160px;
+  height: 170px;
   border-radius: 4px;
   overflow: hidden;
-  background: #111;
+  background: #0a0c10;
 }
 
 .banner-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 55%;
+  object-position: center 35%;
   display: block;
-  filter: contrast(1.2) saturate(1.15) brightness(0.95);
-  transform: scale(1.05);
+  filter: contrast(1.35) saturate(0.55) brightness(0.82) hue-rotate(8deg);
+  transform: scale(1.08);
 }
 
 .avatar {
@@ -75,12 +77,13 @@ body {
   object-fit: cover;
   border: 3px solid var(--bg);
   background: #000;
+  filter: contrast(1.15) saturate(0.85) brightness(0.92);
 }
 
-/* Username */
+/* Username — Syne unchanged */
 .username {
   margin: 2.25rem 0 1rem;
-  font-family: "Syne", "IBM Plex Mono", sans-serif;
+  font-family: "Syne", "Space Grotesk", sans-serif;
   font-size: clamp(2rem, 8vw, 2.75rem);
   font-weight: 800;
   letter-spacing: -0.03em;
@@ -93,19 +96,45 @@ body {
   margin-right: 0.15em;
 }
 
-/* Quote */
+/* Quote typewriter */
 .quote {
   margin: 0 0 1.75rem;
   padding: 0.85rem 1rem;
   background: var(--bg-elevated);
   border-radius: 6px;
   border: none;
+  min-height: 4.5rem;
 }
 
-.quote p {
+.quote-text {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 0.92rem;
+  font-weight: 500;
   color: var(--text);
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+}
+
+.quote-cursor {
+  color: var(--text-muted);
+  animation: blink 0.9s step-end infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.quote-author {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  font-style: normal;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  min-height: 1.1rem;
 }
 
 /* Grid */
@@ -121,6 +150,16 @@ body {
     grid-template-columns: 1fr;
     gap: 2rem;
   }
+
+  .side-photo {
+    order: -1;
+  }
+}
+
+.col-left {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
 }
 
 /* Counter */
@@ -133,18 +172,20 @@ body {
 
 .counter-value {
   display: block;
-  font-size: clamp(1.5rem, 5vw, 2rem);
+  font-family: "Unbounded", "Space Grotesk", sans-serif;
+  font-size: clamp(1.35rem, 4.5vw, 1.85rem);
   font-weight: 600;
   line-height: 1.1;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
 }
 
 .counter-label {
   display: block;
   margin-top: 0.35rem;
-  font-size: 0.65rem;
+  font-size: 0.62rem;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.1em;
   color: var(--text-muted);
 }
 
@@ -152,23 +193,22 @@ body {
 .section-title {
   margin: 0 0 0.65rem;
   font-size: 0.95rem;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--text-muted);
-}
-
-.moon {
-  margin-right: 0.25rem;
+  letter-spacing: -0.01em;
 }
 
 .contents-list {
   list-style: none;
-  margin: 0;
+  margin: 0 0 1.5rem;
   padding: 0;
 }
 
 .contents-list li {
   margin-bottom: 0.35rem;
   font-size: 0.88rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
 }
 
 .contents-list a {
@@ -182,7 +222,7 @@ body {
 
 /* Progress */
 .progress-group {
-  margin-top: 1.5rem;
+  margin-top: 0;
   display: flex;
   flex-direction: column;
   gap: 0.65rem;
@@ -213,13 +253,20 @@ body {
 
 .progress-label {
   flex-shrink: 0;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
+  font-weight: 500;
   color: var(--text-muted);
   min-width: 9rem;
   text-align: right;
+  letter-spacing: 0.02em;
 }
 
-/* Todo */
+/* Todo — bottom left */
+.todo-block {
+  margin-top: auto;
+  padding-top: 2rem;
+}
+
 .pipe-title {
   margin-bottom: 0.75rem;
 }
@@ -236,6 +283,7 @@ body {
   gap: 0.5rem;
   margin-bottom: 0.45rem;
   font-size: 0.9rem;
+  font-weight: 500;
 }
 
 .checkbox {
@@ -270,21 +318,24 @@ body {
   color: var(--text-muted);
 }
 
-.hope {
-  margin: 1rem 0 0.75rem;
-  font-size: 0.88rem;
-  color: var(--text-muted);
-}
-
-.bottom-photo {
+/* Photo — right column */
+.side-photo {
   margin: 0;
 }
 
-.bottom-photo img {
+.side-photo img {
   display: block;
   width: 100%;
   max-width: 280px;
   height: auto;
   border-radius: 6px;
   object-fit: cover;
+  filter: contrast(1.1) saturate(0.9) brightness(0.95);
+}
+
+@media (min-width: 561px) {
+  .col-right {
+    display: flex;
+    justify-content: flex-start;
+  }
 }

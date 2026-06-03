@@ -6,12 +6,12 @@
   <title>awertfy</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@700;800&family=Unbounded:wght@500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
   <div class="page">
-    <p class="top-greeting">welcome my friend</p>
+    <p class="top-greeting">welcome</p>
 
     <header class="profile-header">
       <div class="banner">
@@ -23,7 +23,8 @@
     <h1 class="username"><span class="pipe">|</span>awertfy</h1>
 
     <blockquote class="quote">
-      <p>Walk forward and look up</p>
+      <p class="quote-text"><span id="quote-text"></span><span class="quote-cursor" aria-hidden="true">|</span></p>
+      <cite class="quote-author" id="quote-author"></cite>
     </blockquote>
 
     <main class="grid">
@@ -47,21 +48,18 @@
           </div>
         </div>
 
-        <div class="contents-block">
-          <h2 class="section-title"><span class="moon">☾</span> contents:</h2>
-          <ul class="contents-list">
-            <li>
-              <a href="https://t.me/awertfy" target="_blank" rel="noopener noreferrer">|telegram @awertfy</a>
-            </li>
-            <li><span>|balance : 0$</span></li>
-            <li><span>|happiness</span></li>
-            <li><span>|aspiration</span></li>
-            <li><span>|search</span></li>
-            <li>
-              <a href="https://music.yandex.ru/playlists/lk.5f6472e1-83b2-4dea-b396-37c7a08ac667?utm_source=desktop&utm_medium=copy_link" target="_blank" rel="noopener noreferrer">|music</a>
-            </li>
-          </ul>
-        </div>
+        <ul class="contents-list">
+          <li>
+            <a href="https://t.me/awertfy" target="_blank" rel="noopener noreferrer">|telegram @awertfy</a>
+          </li>
+          <li><span>|balance : 15$</span></li>
+          <li><span>|happiness</span></li>
+          <li><span>|aspiration</span></li>
+          <li><span>|search</span></li>
+          <li>
+            <a href="https://music.yandex.ru/playlists/lk.5f6472e1-83b2-4dea-b396-37c7a08ac667?utm_source=desktop&utm_medium=copy_link" target="_blank" rel="noopener noreferrer">|music</a>
+          </li>
+        </ul>
 
         <div class="progress-group">
           <div class="progress-row">
@@ -77,29 +75,32 @@
             <span class="progress-label" id="day-label">Day: 0 / 29220</span>
           </div>
         </div>
+
+        <div class="todo-block">
+          <h2 class="section-title pipe-title">|things to do</h2>
+          <ul class="todo-list">
+            <li class="todo-item done">
+              <span class="checkbox checked" aria-hidden="true"></span>
+              <span class="todo-text">study</span>
+            </li>
+            <li class="todo-item">
+              <span class="checkbox" aria-hidden="true"></span>
+              <span class="todo-text">clean room</span>
+            </li>
+            <li class="todo-item">
+              <span class="checkbox" aria-hidden="true"></span>
+              <span class="todo-text">work</span>
+            </li>
+            <li class="todo-item">
+              <span class="checkbox" aria-hidden="true"></span>
+              <span class="todo-text">driving</span>
+            </li>
+          </ul>
+        </div>
       </section>
 
       <section class="col col-right">
-        <h2 class="section-title pipe-title">|things to do</h2>
-        <ul class="todo-list">
-          <li class="todo-item done">
-            <span class="checkbox checked" aria-hidden="true"></span>
-            <span class="todo-text">study</span>
-          </li>
-          <li class="todo-item">
-            <span class="checkbox" aria-hidden="true"></span>
-            <span class="todo-text">clean room</span>
-          </li>
-          <li class="todo-item">
-            <span class="checkbox" aria-hidden="true"></span>
-            <span class="todo-text">work</span>
-          </li>
-          <li class="todo-item">
-            <span class="checkbox" aria-hidden="true"></span>
-            <span class="todo-text">driving</span>
-          </li>
-        </ul>
-        <figure class="bottom-photo">
+        <figure class="side-photo">
           <img src="assets/bottom.png" alt="" width="320" height="480" />
         </figure>
       </section>
