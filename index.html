@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css?v=2" />
+  <link rel="stylesheet" href="css/style.css?v=3" />
 </head>
 <body>
   <div class="page">
@@ -57,38 +57,34 @@
         <div class="todo-block">
           <h2 class="section-title"><span class="bar">|</span> things to do</h2>
           <ul class="todo-list">
-            <li class="todo-item done">
-              <span class="checkbox checked" aria-hidden="true"></span>
+            <li class="todo-item done" data-todo="study">
+              <button type="button" class="checkbox checked" aria-pressed="true" aria-label="study"></button>
               <span class="todo-text">study</span>
             </li>
-            <li class="todo-item">
-              <span class="checkbox" aria-hidden="true"></span>
+            <li class="todo-item" data-todo="clean-room">
+              <button type="button" class="checkbox" aria-pressed="false" aria-label="clean room"></button>
               <span class="todo-text">clean room</span>
             </li>
-            <li class="todo-item">
-              <span class="checkbox" aria-hidden="true"></span>
+            <li class="todo-item" data-todo="work">
+              <button type="button" class="checkbox" aria-pressed="false" aria-label="work"></button>
               <span class="todo-text">work</span>
             </li>
-            <li class="todo-item">
-              <span class="checkbox" aria-hidden="true"></span>
+            <li class="todo-item" data-todo="driving">
+              <button type="button" class="checkbox" aria-pressed="false" aria-label="driving"></button>
               <span class="todo-text">driving</span>
             </li>
           </ul>
         </div>
 
         <div class="progress-group">
-          <div class="progress-row">
-            <div class="progress-track">
-              <div class="progress-fill" id="year-fill"></div>
-            </div>
-            <span class="progress-label" id="year-label">Analysis 36/100</span>
+          <div class="progress-track">
+            <div class="progress-fill" id="year-fill"></div>
           </div>
-          <div class="progress-row">
-            <div class="progress-track">
-              <div class="progress-fill" id="day-fill"></div>
-            </div>
-            <span class="progress-label" id="day-label">Day: 0 / 29220</span>
+          <span class="progress-label" id="year-label">Analysis 36/100</span>
+          <div class="progress-track">
+            <div class="progress-fill" id="day-fill"></div>
           </div>
+          <span class="progress-label" id="day-label">Day: 0 / 29220</span>
         </div>
       </section>
 
@@ -101,6 +97,7 @@
             <li><span class="bar">|</span> happiness</li>
             <li><span class="bar">|</span> aspiration</li>
             <li><span class="bar">|</span> search</li>
+            <li><span class="bar">|</span> result</li>
           </ul>
         </div>
       </section>

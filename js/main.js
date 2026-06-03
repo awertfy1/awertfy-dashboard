@@ -255,8 +255,80 @@
     stepQuotes();
   }
 
+  var TODO_STORAGE_KEY = "awertfy-todos";
+
+  function applyTodoState(item, done) {
+    var checkbox = item.querySelector(".checkbox");
+    if (done) {
+      item.classList.add("done");
+      if (checkbox) {
+        checkbox.classList.add("checked");
+        checkbox.setAttribute("aria-pressed", "true");
+      }
+    } else {
+      item.classList.remove("done");
+      if (checkbox) {
+        checkbox.classList.remove("checked");
+        checkbox.setAttribute("aria-pressed", "false");
+      }
+    }
+  }
+
+  function readTodoState() {
+    try {
+      var raw = localStorage.getItem(TODO_STORAGE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function writeTodoState(state) {
+    try {
+      localStorage.setItem(TODO_STORAGE_KEY, JSON.stringify(state));
+    } catch (e) {
+      /* ignore */
+    }
+  }
+
+  function initTodos() {
+    var items = document.querySelectorAll(".todo-item[data-todo]");
+    if (!items.length) return;
+
+    var saved = readTodoState();
+
+    items.forEach(function (item) {
+      var id = item.getAttribute("data-todo");
+      var done = Object.prototype.hasOwnProperty.call(saved, id)
+        ? saved[id]
+        : item.classList.contains("done");
+      applyTodoState(item, done);
+
+      function toggle() {
+        var isDone = !item.classList.contains("done");
+        applyTodoState(item, isDone);
+        saved[id] = isDone;
+        writeTodoState(saved);
+      }
+
+      item.addEventListener("click", function (e) {
+        if (e.target.closest(".checkbox")) return;
+        toggle();
+      });
+
+      var checkbox = item.querySelector(".checkbox");
+      if (checkbox) {
+        checkbox.addEventListener("click", function (e) {
+          e.stopPropagation();
+          toggle();
+        });
+      }
+    });
+  }
+
   tick();
   setInterval(tick, 1000);
   startQuotes();
   startBalanceLoop();
+  initTodos();
 })();
