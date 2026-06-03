@@ -85,10 +85,10 @@
     if (!balanceReel) return;
     setTimeout(function () {
       spinBalance(randomBalance());
-    }, 2000);
+    }, 5000);
     setInterval(function () {
       spinBalance(randomBalance());
-    }, 10000);
+    }, 5000);
   }
 
   function pad(n) {
