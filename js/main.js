@@ -34,6 +34,70 @@
   var dayLabel = document.getElementById("day-label");
   var quoteTextEl = document.getElementById("quote-text");
   var quoteAuthorEl = document.getElementById("quote-author");
+  var balanceEl = document.getElementById("balance-value");
+
+  function randomBalance() {
+    return Math.floor(Math.random() * 996) + 5;
+  }
+
+  function scrollBalance(from, to, done) {
+    if (!balanceEl) {
+      if (done) done();
+      return;
+    }
+
+    var step = 0;
+    var totalSteps = 32;
+
+    function tickBalance() {
+      step += 1;
+      var progress = step / totalSteps;
+
+      if (progress >= 1) {
+        balanceEl.textContent = to;
+        if (done) done();
+        return;
+      }
+
+      if (progress > 0.72) {
+        var eased = (progress - 0.72) / 0.28;
+        balanceEl.textContent = Math.round(from + (to - from) * eased);
+      } else {
+        balanceEl.textContent = randomBalance();
+      }
+
+      setTimeout(tickBalance, 38 + step * 2);
+    }
+
+    tickBalance();
+  }
+
+  function startBalanceLoop() {
+    if (!balanceEl) return;
+
+    var values = [15, 990, 350];
+    var index = 0;
+
+    function nextBalance() {
+      var from = parseInt(balanceEl.textContent, 10) || values[0];
+      var to;
+
+      if (index < values.length) {
+        to = values[index];
+        index += 1;
+      } else {
+        do {
+          to = randomBalance();
+        } while (to === from);
+      }
+
+      scrollBalance(from, to, function () {
+        setTimeout(nextBalance, 2200);
+      });
+    }
+
+    setTimeout(nextBalance, 1200);
+  }
 
   function pad(n) {
     return String(n);
@@ -155,4 +219,5 @@
   tick();
   setInterval(tick, 1000);
   startQuotes();
+  startBalanceLoop();
 })();
