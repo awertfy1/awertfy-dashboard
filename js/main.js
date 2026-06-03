@@ -34,70 +34,50 @@
   var dayLabel = document.getElementById("day-label");
   var quoteTextEl = document.getElementById("quote-text");
   var quoteAuthorEl = document.getElementById("quote-author");
+  var quoteCursorEl = document.querySelector(".quote-text .quote-cursor");
   var authorCursorEl = document.querySelector(".author-cursor");
-  var balanceEl = document.getElementById("balance-value");
+  var balanceReel = document.getElementById("balance-reel");
 
-  function randomBalance() {
-    return Math.floor(Math.random() * 996) + 5;
+  function getCurrentBalance() {
+    if (!balanceReel) return 15;
+    var num = balanceReel.querySelector(".balance-num");
+    return num ? parseInt(num.textContent, 10) : 15;
   }
 
-  function scrollBalance(from, to, done) {
-    if (!balanceEl) {
-      if (done) done();
-      return;
-    }
+  function randomBalance() {
+    var current = getCurrentBalance();
+    var n;
+    do {
+      n = Math.floor(Math.random() * 996) + 5;
+    } while (n === current);
+    return n;
+  }
 
-    var step = 0;
-    var totalSteps = 32;
+  function spinBalance(to) {
+    if (!balanceReel) return;
 
-    function tickBalance() {
-      step += 1;
-      var progress = step / totalSteps;
+    var incoming = document.createElement("span");
+    incoming.className = "balance-num";
+    incoming.textContent = to;
+    balanceReel.insertBefore(incoming, balanceReel.firstChild);
 
-      if (progress >= 1) {
-        balanceEl.textContent = to;
-        if (done) done();
-        return;
-      }
+    balanceReel.classList.remove("spinning");
+    balanceReel.style.transform = "translateY(-1.25em)";
+    balanceReel.offsetHeight;
+    balanceReel.classList.add("spinning");
 
-      if (progress > 0.72) {
-        var eased = (progress - 0.72) / 0.28;
-        balanceEl.textContent = Math.round(from + (to - from) * eased);
-      } else {
-        balanceEl.textContent = randomBalance();
-      }
-
-      setTimeout(tickBalance, 38 + step * 2);
-    }
-
-    tickBalance();
+    setTimeout(function () {
+      balanceReel.classList.remove("spinning");
+      balanceReel.innerHTML = '<span class="balance-num">' + to + "</span>";
+      balanceReel.style.transform = "";
+    }, 560);
   }
 
   function startBalanceLoop() {
-    if (!balanceEl) return;
-
-    var values = [15, 990, 350];
-    var index = 0;
-
-    function nextBalance() {
-      var from = parseInt(balanceEl.textContent, 10) || values[0];
-      var to;
-
-      if (index < values.length) {
-        to = values[index];
-        index += 1;
-      } else {
-        do {
-          to = randomBalance();
-        } while (to === from);
-      }
-
-      scrollBalance(from, to, function () {
-        setTimeout(nextBalance, 2200);
-      });
-    }
-
-    setTimeout(nextBalance, 1200);
+    if (!balanceReel) return;
+    setInterval(function () {
+      spinBalance(randomBalance());
+    }, 10000);
   }
 
   function pad(n) {
@@ -160,6 +140,17 @@
     return copy;
   }
 
+  function setQuoteCursor(on) {
+    if (quoteCursorEl) quoteCursorEl.style.visibility = on ? "visible" : "hidden";
+  }
+
+  function setAuthorCursor(on) {
+    if (authorCursorEl) {
+      if (on) authorCursorEl.classList.add("active");
+      else authorCursorEl.classList.remove("active");
+    }
+  }
+
   function startQuotes() {
     if (!quoteTextEl || !quoteAuthorEl) return;
 
@@ -183,7 +174,8 @@
       phase = "type-quote";
       quoteAuthorEl.textContent = "";
       quoteTextEl.textContent = "";
-      if (authorCursorEl) authorCursorEl.classList.remove("active");
+      setQuoteCursor(true);
+      setAuthorCursor(false);
     }
 
     function stepQuotes() {
@@ -194,43 +186,54 @@
       }
 
       if (phase === "type-quote") {
+        setQuoteCursor(true);
+        setAuthorCursor(false);
         if (charIndex < currentQuote.text.length) {
           quoteTextEl.textContent += currentQuote.text.charAt(charIndex);
           charIndex += 1;
-          pauseUntil = now + 35 + Math.random() * 25;
+          pauseUntil = now + 38 + Math.random() * 22;
         } else {
           phase = "type-author";
           charIndex = 0;
-          if (authorCursorEl) authorCursorEl.classList.add("active");
+          setQuoteCursor(false);
+          setAuthorCursor(true);
         }
       } else if (phase === "type-author") {
+        setQuoteCursor(false);
+        setAuthorCursor(true);
         if (charIndex < authorFull.length) {
           quoteAuthorEl.textContent += authorFull.charAt(charIndex);
           charIndex += 1;
-          pauseUntil = now + 30 + Math.random() * 20;
+          pauseUntil = now + 32 + Math.random() * 18;
         } else {
           phase = "pause";
-          if (authorCursorEl) authorCursorEl.classList.remove("active");
-          pauseUntil = now + 2800;
+          setAuthorCursor(false);
+          pauseUntil = now + 2600;
         }
       } else if (phase === "pause") {
         phase = "delete-author";
-        if (authorCursorEl) authorCursorEl.classList.add("active");
+        charIndex = quoteAuthorEl.textContent.length;
+        setAuthorCursor(true);
       } else if (phase === "delete-author") {
+        setQuoteCursor(false);
+        setAuthorCursor(true);
         if (quoteAuthorEl.textContent.length > 0) {
           quoteAuthorEl.textContent = quoteAuthorEl.textContent.slice(0, -1);
-          pauseUntil = now + 14 + Math.random() * 10;
+          pauseUntil = now + 16 + Math.random() * 12;
         } else {
           phase = "delete-quote";
-          if (authorCursorEl) authorCursorEl.classList.remove("active");
+          setAuthorCursor(false);
+          setQuoteCursor(true);
         }
       } else if (phase === "delete-quote") {
+        setQuoteCursor(true);
+        setAuthorCursor(false);
         if (quoteTextEl.textContent.length > 0) {
           quoteTextEl.textContent = quoteTextEl.textContent.slice(0, -1);
-          pauseUntil = now + 14 + Math.random() * 10;
+          pauseUntil = now + 16 + Math.random() * 12;
         } else {
           nextQuote();
-          pauseUntil = now + 400;
+          pauseUntil = now + 450;
         }
       }
 
@@ -239,6 +242,8 @@
 
     quoteTextEl.textContent = "";
     quoteAuthorEl.textContent = "";
+    setQuoteCursor(true);
+    setAuthorCursor(false);
     requestAnimationFrame(stepQuotes);
   }
 

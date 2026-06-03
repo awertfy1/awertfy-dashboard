@@ -71,27 +71,9 @@ body {
   transform: scale(1.12);
 }
 
-.profile-row {
-  display: flex;
-  align-items: center;
-  gap: 0.85rem;
-  margin: 1rem 0 1rem;
-}
-
-.avatar {
-  width: 72px;
-  height: 72px;
-  border-radius: 6px;
-  object-fit: cover;
-  border: 3px solid var(--bg);
-  background: #000;
-  flex-shrink: 0;
-  filter: contrast(1.15) saturate(0.85) brightness(0.92);
-}
-
 /* Username — Syne unchanged */
 .username {
-  margin: 0;
+  margin: 1rem 0 1rem;
   font-family: "Syne", "Space Grotesk", sans-serif;
   font-size: clamp(2rem, 8vw, 2.75rem);
   font-weight: 800;
@@ -108,11 +90,11 @@ body {
 /* Quote typewriter */
 .quote {
   margin: 0 0 1.75rem;
-  padding: 0.85rem 1rem;
-  background: var(--bg-elevated);
+  padding: 1rem 1.1rem;
+  background: #3a3a3a;
   border-radius: 6px;
   border: none;
-  min-height: 4.75rem;
+  min-height: 5.25rem;
 }
 
 .quote-text {
@@ -136,12 +118,12 @@ body {
 }
 
 .quote-author-line {
-  margin: 0.5rem 0 0;
-  font-size: 0.75rem;
+  margin: 0.55rem 0 0;
+  font-size: 0.66rem;
   font-weight: 500;
-  color: var(--text-muted);
+  color: #b0b0b0;
   letter-spacing: 0.04em;
-  min-height: 1.1rem;
+  min-height: 1rem;
 }
 
 .author-cursor {
@@ -221,9 +203,32 @@ body {
   color: var(--text-muted);
 }
 
-.balance-value {
+.balance-slot {
   display: inline-block;
-  min-width: 2.2em;
+  vertical-align: bottom;
+  height: 1.25em;
+  overflow: hidden;
+  min-width: 2.4em;
+  text-align: center;
+  position: relative;
+  top: 0.05em;
+}
+
+.balance-reel {
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.55s cubic-bezier(0.22, 0.85, 0.3, 1);
+  will-change: transform;
+}
+
+.balance-reel.spinning {
+  transform: translateY(0);
+}
+
+.balance-num {
+  display: block;
+  height: 1.25em;
+  line-height: 1.25em;
   font-variant-numeric: tabular-nums;
   font-weight: 600;
   letter-spacing: -0.02em;
@@ -381,24 +386,29 @@ body {
 }
 
 /* Photo — right column */
+.col-right {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
 .side-photo {
   margin: 0;
-  height: 100%;
+  margin-top: auto;
+  flex: 1;
+  min-height: 280px;
+  max-width: 240px;
+  border-radius: 6px;
+  overflow: hidden;
 }
 
 .side-photo img {
   display: block;
   width: 100%;
-  max-width: 240px;
-  height: auto;
+  height: 100%;
+  min-height: 280px;
   border-radius: 6px;
   object-fit: cover;
+  object-position: center top;
   filter: contrast(1.28) saturate(0.55) brightness(0.86) hue-rotate(4deg);
-}
-
-@media (min-width: 561px) {
-  .col-right {
-    display: flex;
-    justify-content: flex-start;
-  }
 }
