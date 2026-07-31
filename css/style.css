@@ -10,12 +10,10 @@
   --text: #f2f2f2;
   --text-muted: #8a8a8a;
   --border: #2a2a2a;
-  --fill: #d8d8d8;
-  --check: #efefef;
   --chip: #1a1a1a;
   --max: 1120px;
-  --serif: "Instrument Serif", "Times New Roman", serif;
-  --sans: "Outfit", system-ui, sans-serif;
+  --serif: "Fraunces", "Times New Roman", serif;
+  --sans: "Sora", system-ui, sans-serif;
 }
 
 html {
@@ -172,35 +170,12 @@ img {
 }
 
 .lede {
-  margin: 0 auto 1.75rem;
+  margin: 0 auto 0.5rem;
   max-width: 26rem;
   font-size: clamp(1.15rem, 2.4vw, 1.35rem);
   font-weight: 300;
   color: var(--text-muted);
   line-height: 1.55;
-}
-
-.pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-  padding: 0.75rem 1.35rem;
-  border-radius: 999px;
-  background: var(--text);
-  color: var(--bg);
-  font-size: 0.9rem;
-  font-weight: 500;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.pill:hover {
-  transform: translateY(-2px);
-  opacity: 0.92;
-}
-
-.pill-arrow {
-  font-size: 0.95em;
-  line-height: 1;
 }
 
 .hero-visual {
@@ -288,7 +263,6 @@ img {
 
 .hero-copy .eyebrow.reveal { animation-delay: 0.05s; }
 .hero-copy .lede.reveal { animation-delay: 0.18s; }
-.hero-copy .pill.reveal { animation-delay: 0.32s; }
 .hero-visual.reveal { animation-delay: 0.25s; }
 .create-chip.reveal { animation-delay: 0.7s; }
 
@@ -453,124 +427,35 @@ img {
   font-weight: 500;
 }
 
-/* Focus section */
-.focus {
-  display: grid;
-  grid-template-columns: 1.4fr 0.8fr;
-  gap: 3rem;
-  padding: 3rem 0 1rem;
+/* Path */
+.path {
+  padding: 2.5rem 0 1rem;
   border-top: 1px solid var(--border);
-  align-items: start;
-}
-
-.section-title {
-  margin: 0 0 1.25rem;
-  font-family: var(--serif);
-  font-size: 1.35rem;
-  font-weight: 400;
-  letter-spacing: -0.01em;
-}
-
-.todo-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 0.7rem;
-}
-
-.todo-item {
-  display: grid;
-  grid-template-columns: 16px auto;
-  align-items: center;
-  gap: 0.75rem;
-  font-size: 0.95rem;
-  font-weight: 300;
-  cursor: pointer;
-  user-select: none;
-  width: fit-content;
-}
-
-.checkbox {
-  width: 15px;
-  height: 15px;
-  padding: 0;
-  border: 1px solid var(--border);
-  border-radius: 2px;
-  position: relative;
-  background: transparent;
-  cursor: pointer;
-  transition: background 0.2s ease, border-color 0.2s ease;
-}
-
-.checkbox.checked {
-  background: var(--check);
-  border-color: var(--check);
-}
-
-.checkbox.checked::after {
-  content: "";
-  position: absolute;
-  left: 4px;
-  top: 1px;
-  width: 5px;
-  height: 9px;
-  border: solid #111;
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg) scale(0);
-  animation: check-pop 0.25s ease forwards;
-}
-
-@keyframes check-pop {
-  to { transform: rotate(45deg) scale(1); }
-}
-
-.todo-text {
-  position: relative;
-  display: inline-block;
-  transition: color 0.35s ease;
-}
-
-.todo-text::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 50%;
-  height: 1px;
-  width: 0;
-  background: var(--text-muted);
-  transform: translateY(-50%);
-  transition: width 0.35s ease;
-}
-
-.todo-item.done .todo-text {
-  color: var(--text-muted);
-}
-
-.todo-item.done .todo-text::after {
-  width: 100%;
 }
 
 .side-links {
   list-style: none;
   margin: 0;
-  padding: 0.35rem 0 0;
-  text-align: right;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem 1.75rem;
+  justify-content: flex-start;
 }
 
 .side-links li {
-  margin: 0 0 0.55rem;
+  margin: 0;
   font-family: var(--serif);
-  font-size: 1.15rem;
-  font-weight: 400;
+  font-size: 1.2rem;
+  font-weight: 300;
+  font-variation-settings: "SOFT" 50, "WONK" 0.5;
   color: var(--text-muted);
   letter-spacing: -0.01em;
-  transition: color 0.25s ease, transform 0.25s ease;
+  transition: color 0.25s ease;
 }
 
 .side-links li:hover {
   color: var(--text);
-  transform: translateX(-4px);
 }
 
 .footer {
@@ -593,15 +478,6 @@ img {
 @media (max-width: 860px) {
   .bio-grid {
     grid-template-columns: 1fr 1fr;
-  }
-
-  .focus {
-    grid-template-columns: 1fr;
-    gap: 2.5rem;
-  }
-
-  .side-links {
-    text-align: left;
   }
 }
 
