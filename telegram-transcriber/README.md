@@ -58,6 +58,30 @@ chmod +x start_mac.sh
 | `small` (по умолчанию)   | хорошо для RU | баланс    |
 | `medium`                 | лучше    | медленнее      |
 
+## Большие файлы (пересылка > 20 МБ)
+
+Обычный Telegram API **не отдаёт** боту файлы больше ~20 МБ — сжать «до скачивания» невозможно.
+Решение: локальный Bot API на вашем Mac (до ~2 ГБ), потом бот сам скачивает → сжимает → расшифровывает.
+
+1. Установите [Docker Desktop](https://www.docker.com/products/docker-desktop/).
+2. Получите `api_id` и `api_hash`: [my.telegram.org](https://my.telegram.org) → **API development tools**.
+3. Добавьте в `.env`:
+
+```env
+TELEGRAM_API_ID=12345678
+TELEGRAM_API_HASH=your_api_hash
+LOCAL_API_URL=http://127.0.0.1:8081
+```
+
+4. Запустите локальный API (одно окно Terminal):
+
+```bash
+chmod +x start_local_api.sh
+./start_local_api.sh
+```
+
+5. В другом окне: `./start_mac.sh`
+
 ## Безопасность
 
 - Не публикуйте токен бота.

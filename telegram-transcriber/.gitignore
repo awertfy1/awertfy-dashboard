@@ -9,3 +9,4 @@ downloads/
 *.log
 models/
 .whisper_cache/
+bot-api-data/

@@ -12,6 +12,8 @@ import tempfile
 from pathlib import Path
 
 from aiogram import Bot, Dispatcher, F
+from aiogram.client.session.aiohttp import AiohttpSession
+from aiogram.client.telegram import TelegramAPIServer
 from aiogram.exceptions import TelegramBadRequest
 from aiogram.filters import Command, CommandStart
 from aiogram.types import BufferedInputFile, Message
@@ -31,6 +33,10 @@ WHISPER_MODEL = os.getenv("WHISPER_MODEL", "small").strip() or "small"
 WHISPER_DEVICE = os.getenv("WHISPER_DEVICE", "cpu").strip() or "cpu"
 WHISPER_COMPUTE_TYPE = os.getenv("WHISPER_COMPUTE_TYPE", "int8").strip() or "int8"
 
+# Local Bot API removes the public 20 MB download limit (needs Docker + api_id/hash).
+LOCAL_API_URL = os.getenv("LOCAL_API_URL", "").strip().rstrip("/")
+USE_LOCAL_API = bool(LOCAL_API_URL)
+
 ALLOWED_USER_IDS = {
     int(x.strip())
     for x in os.getenv("ALLOWED_USER_IDS", "").split(",")
@@ -46,14 +52,23 @@ if not ALLOWED_USER_IDS:
 if shutil.which("ffmpeg") is None:
     raise SystemExit("ffmpeg not found. On macOS: brew install ffmpeg")
 
-bot = Bot(token=TOKEN)
+if USE_LOCAL_API:
+    session = AiohttpSession(api=TelegramAPIServer.from_base(LOCAL_API_URL))
+    bot = Bot(token=TOKEN, session=session)
+    log.info("Using local Bot API: %s (large files OK)", LOCAL_API_URL)
+else:
+    bot = Bot(token=TOKEN)
+    log.warning(
+        "LOCAL_API_URL is empty — files over ~20 MB will fail. "
+        "Run ./start_local_api.sh and set LOCAL_API_URL in .env"
+    )
+
 dp = Dispatcher()
 
 # Whisper is loaded in a background thread after polling starts.
 _model = None
 _model_error: str | None = None
 _model_ready = asyncio.Event()
-_model_lock = asyncio.Lock()
 
 TMP_ROOT = Path(__file__).resolve().parent / "tmp"
 TMP_ROOT.mkdir(exist_ok=True)
@@ -101,7 +116,8 @@ async def ensure_model_ready(message: Message) -> bool:
     return _model is not None
 
 
-def extract_audio(src: Path, dst_wav: Path) -> None:
+def compress_to_wav(src: Path, dst_wav: Path) -> None:
+    """Extract + compress audio to mono 16 kHz WAV for Whisper."""
     cmd = [
         "ffmpeg",
         "-y",
@@ -112,59 +128,63 @@ def extract_audio(src: Path, dst_wav: Path) -> None:
         "1",
         "-ar",
         "16000",
-        "-f",
-        "wav",
+        "-c:a",
+        "pcm_s16le",
         str(dst_wav),
     ]
     result = subprocess.run(cmd, capture_output=True, text=True)
     if result.returncode != 0:
-        raise RuntimeError(result.stderr[-800:] or "ffmpeg failed")
+        raise RuntimeError(result.stderr[-800:] or "ffmpeg compress failed")
 
 
-def transcribe_file(media_path: Path) -> str:
+def transcribe_wav(wav_path: Path) -> str:
     if _model is None:
         raise RuntimeError("Whisper model is not loaded yet")
 
-    wav_path = media_path.with_suffix(".wav")
-    try:
-        extract_audio(media_path, wav_path)
-        segments, _info = _model.transcribe(
-            str(wav_path),
-            language=LANGUAGE,
-            vad_filter=True,
-            beam_size=5,
-        )
-        text = "\n".join(seg.text.strip() for seg in segments if seg.text.strip())
-        return text.strip()
-    finally:
-        if wav_path.exists():
-            wav_path.unlink(missing_ok=True)
+    segments, _info = _model.transcribe(
+        str(wav_path),
+        language=LANGUAGE,
+        vad_filter=True,
+        beam_size=5,
+    )
+    text = "\n".join(seg.text.strip() for seg in segments if seg.text.strip())
+    return text.strip()
 
 
 async def download_telegram_file(file_id: str, suffix: str) -> Path:
     try:
         file = await bot.get_file(file_id)
     except TelegramBadRequest as exc:
-        # Official Bot API cannot download files larger than ~20 MB.
         if "file is too big" in str(exc).lower():
             raise RuntimeError(
-                "Файл больше 20 МБ — лимит Telegram для ботов.\n"
-                "Сожмите аудио или разрежьте на части покороче и пришлите снова."
+                "Файл слишком большой для обычного Telegram API (~20 МБ).\n"
+                "Нужен локальный Bot API: запустите ./start_local_api.sh "
+                "и пропишите LOCAL_API_URL в .env, затем перезапустите бота."
             ) from exc
         raise
 
     if not file.file_path:
         raise RuntimeError("Telegram did not return file_path")
 
-    if file.file_size and file.file_size > 20 * 1024 * 1024:
+    # Public cloud API hard-limit. Local Bot API allows up to ~2 GB.
+    if (
+        not USE_LOCAL_API
+        and file.file_size
+        and file.file_size > 20 * 1024 * 1024
+    ):
         raise RuntimeError(
-            "Файл больше 20 МБ — лимит Telegram для ботов.\n"
-            "Сожмите аудио или разрежьте на части покороче и пришлите снова."
+            "Файл больше 20 МБ. Включите локальный Bot API "
+            "(./start_local_api.sh + LOCAL_API_URL в .env)."
         )
 
     workdir = Path(tempfile.mkdtemp(prefix="tg_", dir=TMP_ROOT))
     dest = workdir / f"input{suffix}"
     await bot.download_file(file.file_path, destination=dest)
+    log.info(
+        "Downloaded %s (%s bytes)",
+        dest.name,
+        file.file_size if file.file_size is not None else "?",
+    )
     return dest
 
 
@@ -179,12 +199,20 @@ async def handle_media(message: Message, file_id: str, suffix: str, label: str) 
     if not await ensure_model_ready(message):
         return
 
-    status = await message.answer(f"Принял {label}. Расшифровываю…")
+    status = await message.answer(f"Принял {label}. Скачиваю…")
     media_path: Path | None = None
+    wav_path: Path | None = None
 
     try:
         media_path = await download_telegram_file(file_id, suffix)
-        text = await asyncio.to_thread(transcribe_file, media_path)
+
+        await status.edit_text("Сжимаю аудио…")
+        assert media_path is not None
+        wav_path = media_path.with_name("compressed.wav")
+        await asyncio.to_thread(compress_to_wav, media_path, wav_path)
+
+        await status.edit_text("Расшифровываю…")
+        text = await asyncio.to_thread(transcribe_wav, wav_path)
 
         if not text:
             await status.edit_text("Речь не распознана (тишина или очень шумно).")
@@ -214,11 +242,15 @@ async def cmd_start(message: Message) -> None:
         return
 
     ready = "готова ✅" if _model_ready.is_set() and _model is not None else "ещё загружается ⏳"
+    api_mode = (
+        "локальный API (большие файлы OK) ✅"
+        if USE_LOCAL_API
+        else "облачный API (лимит ~20 МБ) ⚠️"
+    )
     await message.answer(
-        f"Бот онлайн. Модель: {ready}\n\n"
-        "Пришлите голосовое, аудио (mp3), видео или кружок.\n"
-        "Отвечу .txt файлом с расшифровкой.\n\n"
-        "Лимит Telegram: файл до 20 МБ."
+        f"Бот онлайн.\nМодель: {ready}\nAPI: {api_mode}\n\n"
+        "Перешлите голосовое, аудио, видео или кружок.\n"
+        "Я сам скачаю → сжамаю → пришлю .txt"
     )
 
 
@@ -320,15 +352,14 @@ async def _preload_model() -> None:
 async def main() -> None:
     me = await bot.get_me()
     log.info(
-        "Bot @%s starting polling NOW. Allowed users: %s",
+        "Bot @%s starting polling NOW. Allowed users: %s | local_api=%s",
         me.username,
         sorted(ALLOWED_USER_IDS),
+        USE_LOCAL_API,
     )
     log.info("Whisper will load in background — do not close this window")
 
-    # Start model download/load without blocking Telegram updates.
     asyncio.create_task(_preload_model())
-
     await dp.start_polling(bot)
 
 
