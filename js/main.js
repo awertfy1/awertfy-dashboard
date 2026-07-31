@@ -326,9 +326,40 @@
     });
   }
 
+  function lockScrollTop() {
+    if ("scrollRestoration" in history) {
+      history.scrollRestoration = "manual";
+    }
+
+    if (location.hash) {
+      history.replaceState(null, "", location.pathname + location.search);
+    }
+
+    window.scrollTo(0, 0);
+  }
+
+  function initNavScroll() {
+    var links = document.querySelectorAll("[data-scroll]");
+    links.forEach(function (link) {
+      link.addEventListener("click", function (e) {
+        var id = link.getAttribute("data-scroll");
+        var target = id ? document.getElementById(id) : null;
+        if (!target) return;
+        e.preventDefault();
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    });
+  }
+
+  lockScrollTop();
+  window.addEventListener("load", function () {
+    window.scrollTo(0, 0);
+  });
+
   tick();
   setInterval(tick, 1000);
   startQuotes();
   startBalanceLoop();
   initTodos();
+  initNavScroll();
 })();

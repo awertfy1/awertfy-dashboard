@@ -11,13 +11,13 @@
   --border: #262626;
   --chip: #161616;
   --max: 960px;
-  --display: "Cormorant Garamond", "Times New Roman", serif;
-  --ui: "Jost", system-ui, sans-serif;
+  --display: "BBH Bartle", system-ui, sans-serif;
+  --condensed: "Special Gothic Condensed One", system-ui, sans-serif;
   --pad: clamp(1.1rem, 4vw, 1.75rem);
 }
 
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
 }
 
 body {
@@ -45,6 +45,8 @@ img {
 
 .muted {
   color: var(--text-muted);
+  font-family: var(--condensed);
+  letter-spacing: 0.04em;
 }
 
 .visually-hidden {
@@ -91,10 +93,10 @@ img {
 }
 
 .logo {
-  font-family: var(--ui);
-  font-size: 0.82rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
+  font-family: var(--condensed);
+  font-size: 1.05rem;
+  font-weight: 400;
+  letter-spacing: 0.06em;
   text-transform: lowercase;
 }
 
@@ -113,11 +115,11 @@ img {
 
 .nav a,
 .top-cta {
-  font-family: var(--ui);
-  font-size: 0.78rem;
+  font-family: var(--condensed);
+  font-size: 1rem;
   font-weight: 400;
   color: var(--text-muted);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
   transition: color 0.25s ease;
 }
 
@@ -162,23 +164,23 @@ img {
 
 .eyebrow {
   margin: 0 0 0.85rem;
-  font-family: var(--ui);
-  font-size: 0.72rem;
+  font-family: var(--condensed);
+  font-size: 0.95rem;
   font-weight: 400;
-  letter-spacing: 0.28em;
+  letter-spacing: 0.22em;
   text-transform: lowercase;
   color: var(--text-muted);
 }
 
 .lede {
   margin: 0 auto;
-  max-width: 22rem;
-  font-size: clamp(1.35rem, 3.6vw, 1.85rem);
-  font-weight: 300;
-  font-style: italic;
+  max-width: 24rem;
+  font-family: var(--display);
+  font-size: clamp(1.15rem, 3.2vw, 1.55rem);
+  font-weight: 400;
   color: var(--text);
-  line-height: 1.35;
-  letter-spacing: -0.01em;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
 }
 
 .hero-visual {
@@ -224,10 +226,10 @@ img {
 
 .create-chip span:first-child {
   padding: 0.65rem 0.95rem;
-  font-family: var(--ui);
-  font-size: 0.78rem;
+  font-family: var(--condensed);
+  font-size: 0.95rem;
   font-weight: 400;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.04em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -290,14 +292,6 @@ img {
   border-top: 1px solid var(--border);
 }
 
-.bio-label {
-  margin: 0 0 1.35rem;
-  font-size: clamp(0.95rem, 2vw, 1.1rem);
-  font-weight: 400;
-  letter-spacing: 0.18em;
-  color: var(--text-muted);
-}
-
 .bio-grid {
   display: grid;
   grid-template-columns: 1.5fr 0.7fr;
@@ -308,8 +302,9 @@ img {
 
 .bio-col p {
   margin: 0 0 0.5rem;
-  font-size: clamp(1.1rem, 2.3vw, 1.3rem);
-  font-weight: 300;
+  font-family: var(--display);
+  font-size: clamp(1.05rem, 2.3vw, 1.25rem);
+  font-weight: 400;
   letter-spacing: 0.01em;
 }
 
@@ -321,8 +316,10 @@ img {
 }
 
 .bio-col.links a {
-  font-size: clamp(1.1rem, 2.3vw, 1.3rem);
-  font-weight: 300;
+  font-family: var(--condensed);
+  font-size: clamp(1.15rem, 2.5vw, 1.4rem);
+  font-weight: 400;
+  letter-spacing: 0.04em;
   color: var(--text-muted);
   transition: color 0.2s ease;
   width: fit-content;
@@ -336,21 +333,20 @@ img {
   margin-top: 1.35rem !important;
   min-height: 4.25rem;
   max-width: 28rem;
-  font-size: clamp(1.2rem, 2.8vw, 1.45rem);
-  font-weight: 300;
-  font-style: italic;
-  line-height: 1.4;
+  font-family: var(--display);
+  font-size: clamp(1.1rem, 2.6vw, 1.35rem);
+  font-weight: 400;
+  line-height: 1.45;
   color: var(--text);
 }
 
 .quote-author {
   display: inline-block;
   margin-top: 0.4rem;
-  font-family: var(--ui);
-  font-size: 0.78rem;
-  font-style: normal;
+  font-family: var(--condensed);
+  font-size: 0.95rem;
   font-weight: 400;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
   color: var(--text-muted);
 }
 
@@ -386,20 +382,21 @@ img {
 
 .counter-value {
   display: block;
+  font-family: var(--display);
   font-size: clamp(1.65rem, 5.5vw, 2.75rem);
-  font-weight: 300;
+  font-weight: 400;
   line-height: 1;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
 }
 
 .counter-label {
   display: block;
   margin-top: 0.55rem;
-  font-family: var(--ui);
-  font-size: 0.62rem;
+  font-family: var(--condensed);
+  font-size: 0.85rem;
   font-weight: 400;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-muted);
 }
