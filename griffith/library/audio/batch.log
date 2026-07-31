@@ -206,3 +206,81 @@ ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information ava
 ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information available (required by /lib/x86_64-linux-gnu/libcaca.so.0)
 22:00:11 [12/68] START 14. Урок №8. Быть В Теле.MP3 (7.2 min)
 22:00:11 [12/68] START 14. Урок №8. Быть В Теле.MP3 (7.2 min)
+22:00:49 [12/68] DONE 14. Урок №8. Быть В Теле.MP3 chars=4944 wall=0.6m out=14_Урок_N8_Быть_В_Теле.md
+22:00:49 [12/68] DONE 14. Урок №8. Быть В Теле.MP3 chars=4944 wall=0.6m out=14_Урок_N8_Быть_В_Теле.md
+ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information available (required by /lib/x86_64-linux-gnu/libcaca.so.0)
+ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information available (required by /lib/x86_64-linux-gnu/libcaca.so.0)
+22:00:49 [13/68] START 4_Глубинное_молчание_1_TR_2015_Сентябрь.MP3 (7.4 min)
+22:00:49 [13/68] START 4_Глубинное_молчание_1_TR_2015_Сентябрь.MP3 (7.4 min)
+22:01:27 [13/68] DONE 4_Глубинное_молчание_1_TR_2015_Сентябрь.MP3 chars=5217 wall=0.6m out=4_Глубинное_молчание_1_TR_2015_Сентябрь.md
+22:01:27 [13/68] DONE 4_Глубинное_молчание_1_TR_2015_Сентябрь.MP3 chars=5217 wall=0.6m out=4_Глубинное_молчание_1_TR_2015_Сентябрь.md
+ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information available (required by /lib/x86_64-linux-gnu/libcaca.so.0)
+ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information available (required by /lib/x86_64-linux-gnu/libcaca.so.0)
+22:01:27 [14/68] START 19. Урок №13. Сам Против Себя.MP3 (7.5 min)
+22:01:27 [14/68] START 19. Урок №13. Сам Против Себя.MP3 (7.5 min)
+22:02:22 [14/68] DONE 19. Урок №13. Сам Против Себя.MP3 chars=5615 wall=0.9m out=19_Урок_N13_Сам_Против_Себя.md
+22:02:22 [14/68] DONE 19. Урок №13. Сам Против Себя.MP3 chars=5615 wall=0.9m out=19_Урок_N13_Сам_Против_Себя.md
+ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information available (required by /lib/x86_64-linux-gnu/libcaca.so.0)
+ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information available (required by /lib/x86_64-linux-gnu/libcaca.so.0)
+22:02:22 [15/68] START 20. Урок №14. Сердце Чемпиона.MP3 (7.5 min)
+22:02:22 [15/68] START 20. Урок №14. Сердце Чемпиона.MP3 (7.5 min)
+22:02:56 [15/68] DONE 20. Урок №14. Сердце Чемпиона.MP3 chars=4537 wall=0.6m out=20_Урок_N14_Сердце_Чемпиона.md
+22:02:56 [15/68] DONE 20. Урок №14. Сердце Чемпиона.MP3 chars=4537 wall=0.6m out=20_Урок_N14_Сердце_Чемпиона.md
+ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information available (required by /lib/x86_64-linux-gnu/libcaca.so.0)
+ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information available (required by /lib/x86_64-linux-gnu/libcaca.so.0)
+22:02:56 [16/68] START 18. Урок №12. Гнев - Это Дар.MP3 (7.5 min)
+22:02:56 [16/68] START 18. Урок №12. Гнев - Это Дар.MP3 (7.5 min)
+22:03:40 [16/68] DONE 18. Урок №12. Гнев - Это Дар.MP3 chars=5119 wall=0.7m out=18_Урок_N12_Гнев_-_Это_Дар.md
+22:03:40 [16/68] DONE 18. Урок №12. Гнев - Это Дар.MP3 chars=5119 wall=0.7m out=18_Урок_N12_Гнев_-_Это_Дар.md
+ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information available (required by /lib/x86_64-linux-gnu/libcaca.so.0)
+ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information available (required by /lib/x86_64-linux-gnu/libcaca.so.0)
+22:03:40 [17/68] START 3. Воля (TR 2015 Сентябрь).MP3 (7.7 min)
+22:03:40 [17/68] START 3. Воля (TR 2015 Сентябрь).MP3 (7.7 min)
+22:04:16 [17/68] DONE 3. Воля (TR 2015 Сентябрь).MP3 chars=4260 wall=0.6m out=3_Воля_TR_2015_Сентябрь.md
+22:04:16 [17/68] DONE 3. Воля (TR 2015 Сентябрь).MP3 chars=4260 wall=0.6m out=3_Воля_TR_2015_Сентябрь.md
+ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information available (required by /lib/x86_64-linux-gnu/libcaca.so.0)
+ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information available (required by /lib/x86_64-linux-gnu/libcaca.so.0)
+22:04:16 [18/68] START 5_Глубинное_молчание_2_TR_2015_Сентябрь.MP3 (8.1 min)
+22:04:16 [18/68] START 5_Глубинное_молчание_2_TR_2015_Сентябрь.MP3 (8.1 min)
+22:05:09 [18/68] DONE 5_Глубинное_молчание_2_TR_2015_Сентябрь.MP3 chars=4570 wall=0.9m out=5_Глубинное_молчание_2_TR_2015_Сентябрь.md
+22:05:09 [18/68] DONE 5_Глубинное_молчание_2_TR_2015_Сентябрь.MP3 chars=4570 wall=0.9m out=5_Глубинное_молчание_2_TR_2015_Сентябрь.md
+ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information available (required by /lib/x86_64-linux-gnu/libcaca.so.0)
+ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information available (required by /lib/x86_64-linux-gnu/libcaca.so.0)
+22:05:09 [19/68] START 11_Общение_с_холодом_TR_2015_Сентябрь.MP3 (8.2 min)
+22:05:09 [19/68] START 11_Общение_с_холодом_TR_2015_Сентябрь.MP3 (8.2 min)
+22:05:51 [19/68] DONE 11_Общение_с_холодом_TR_2015_Сентябрь.MP3 chars=5599 wall=0.7m out=11_Общение_с_холодом_TR_2015_Сентябрь.md
+22:05:51 [19/68] DONE 11_Общение_с_холодом_TR_2015_Сентябрь.MP3 chars=5599 wall=0.7m out=11_Общение_с_холодом_TR_2015_Сентябрь.md
+ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information available (required by /lib/x86_64-linux-gnu/libcaca.so.0)
+ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information available (required by /lib/x86_64-linux-gnu/libcaca.so.0)
+22:05:51 [20/68] START 8. Мужская еда (TR 2015 Сентябрь).MP3 (8.3 min)
+22:05:51 [20/68] START 8. Мужская еда (TR 2015 Сентябрь).MP3 (8.3 min)
+22:06:31 [20/68] DONE 8. Мужская еда (TR 2015 Сентябрь).MP3 chars=4433 wall=0.7m out=8_Мужская_еда_TR_2015_Сентябрь.md
+22:06:31 [20/68] DONE 8. Мужская еда (TR 2015 Сентябрь).MP3 chars=4433 wall=0.7m out=8_Мужская_еда_TR_2015_Сентябрь.md
+ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information available (required by /lib/x86_64-linux-gnu/libcaca.so.0)
+ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information available (required by /lib/x86_64-linux-gnu/libcaca.so.0)
+22:06:31 [21/68] START 2. 5 ветвей власти (TR 2015 Сентябрь).MP3 (8.3 min)
+22:06:31 [21/68] START 2. 5 ветвей власти (TR 2015 Сентябрь).MP3 (8.3 min)
+22:07:12 [21/68] DONE 2. 5 ветвей власти (TR 2015 Сентябрь).MP3 chars=5607 wall=0.7m out=2_5_ветвеи_власти_TR_2015_Сентябрь.md
+22:07:12 [21/68] DONE 2. 5 ветвей власти (TR 2015 Сентябрь).MP3 chars=5607 wall=0.7m out=2_5_ветвеи_власти_TR_2015_Сентябрь.md
+ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information available (required by /lib/x86_64-linux-gnu/libcaca.so.0)
+ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information available (required by /lib/x86_64-linux-gnu/libcaca.so.0)
+22:07:12 [22/68] START 2. Проклятое оружие.MP3 (8.4 min)
+22:07:12 [22/68] START 2. Проклятое оружие.MP3 (8.4 min)
+22:08:11 [22/68] DONE 2. Проклятое оружие.MP3 chars=5492 wall=1.0m out=2_Проклятое_оружие.md
+22:08:11 [22/68] DONE 2. Проклятое оружие.MP3 chars=5492 wall=1.0m out=2_Проклятое_оружие.md
+ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information available (required by /lib/x86_64-linux-gnu/libcaca.so.0)
+ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information available (required by /lib/x86_64-linux-gnu/libcaca.so.0)
+22:08:11 [23/68] START 20_Раннее_пробуждение_3_TR_2015_Сентябрь.MP3 (8.4 min)
+22:08:11 [23/68] START 20_Раннее_пробуждение_3_TR_2015_Сентябрь.MP3 (8.4 min)
+22:09:06 [23/68] DONE 20_Раннее_пробуждение_3_TR_2015_Сентябрь.MP3 chars=6532 wall=0.9m out=20_Раннее_пробуждение_3_TR_2015_Сентябрь.md
+22:09:06 [23/68] DONE 20_Раннее_пробуждение_3_TR_2015_Сентябрь.MP3 chars=6532 wall=0.9m out=20_Раннее_пробуждение_3_TR_2015_Сентябрь.md
+ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information available (required by /lib/x86_64-linux-gnu/libcaca.so.0)
+ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information available (required by /lib/x86_64-linux-gnu/libcaca.so.0)
+22:09:06 [24/68] START 25. Урок №17. Подсвечивание.MP3 (8.8 min)
+22:09:06 [24/68] START 25. Урок №17. Подсвечивание.MP3 (8.8 min)
+22:10:12 [24/68] DONE 25. Урок №17. Подсвечивание.MP3 chars=5971 wall=1.1m out=25_Урок_N17_Подсвечивание.md
+22:10:12 [24/68] DONE 25. Урок №17. Подсвечивание.MP3 chars=5971 wall=1.1m out=25_Урок_N17_Подсвечивание.md
+ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information available (required by /lib/x86_64-linux-gnu/libcaca.so.0)
+ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information available (required by /lib/x86_64-linux-gnu/libcaca.so.0)
+22:10:12 [25/68] START 6. Эфир TR 2015 (Июнь).MP3 (8.9 min)
+22:10:12 [25/68] START 6. Эфир TR 2015 (Июнь).MP3 (8.9 min)
