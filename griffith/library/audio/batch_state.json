@@ -1,0 +1,71 @@
+{
+  "done": {
+    "23_Упражнение_Кегеля_TR_2015_Сентябрь.MP3": {
+      "out": "/workspace/griffith/library/audio/transcripts/23_Упражнение_Кегеля_TR_2015_Сентябрь.md",
+      "chars": 1322,
+      "minutes": 2.2,
+      "elapsed_sec": 9.3
+    },
+    "19_Раннее_пробуждение_2_TR_2015_Сентябрь.MP3": {
+      "out": "/workspace/griffith/library/audio/transcripts/19_Раннее_пробуждение_2_TR_2015_Сентябрь.md",
+      "chars": 2058,
+      "minutes": 3.66,
+      "elapsed_sec": 30.7
+    },
+    "22. Сердце чемпиона (TR 2015 Сентябрь).MP3": {
+      "out": "/workspace/griffith/library/audio/transcripts/22_Сердце_чемпиона_TR_2015_Сентябрь.md",
+      "chars": 2157,
+      "minutes": 4.02,
+      "elapsed_sec": 17.1
+    },
+    "7_Максимальное_восстановление_TR_2015_Сентябрь.MP3": {
+      "out": "/workspace/griffith/library/audio/transcripts/7_Максимальное_восстановление_TR_2015_Сентябрь.md",
+      "chars": 2928,
+      "minutes": 4.29,
+      "elapsed_sec": 28.8
+    },
+    "15_Природная_энергия_2_TR_2015_Сентябрь.MP3": {
+      "out": "/workspace/griffith/library/audio/transcripts/15_Природная_энергия_2_TR_2015_Сентябрь.md",
+      "chars": 2577,
+      "minutes": 4.63,
+      "elapsed_sec": 18.5
+    },
+    "14_Природная_энергия_1_TR_2015_Сентябрь.MP3": {
+      "out": "/workspace/griffith/library/audio/transcripts/14_Природная_энергия_1_TR_2015_Сентябрь.md",
+      "chars": 3140,
+      "minutes": 4.93,
+      "elapsed_sec": 25.4
+    },
+    "21_Речь,_жестикуляция_и_мимика_TR_2015_Сентябрь.MP3": {
+      "out": "/workspace/griffith/library/audio/transcripts/21_Речь_жестикуляция_и_мимика_TR_2015_Сентябрь.md",
+      "chars": 3071,
+      "minutes": 5.61,
+      "elapsed_sec": 26.7
+    },
+    "16_Природная_энергия_3_TR_2015_Сентябрь.MP3": {
+      "out": "/workspace/griffith/library/audio/transcripts/16_Природная_энергия_3_TR_2015_Сентябрь.md",
+      "chars": 3266,
+      "minutes": 5.72,
+      "elapsed_sec": 24.9
+    },
+    "18_Раннее_пробуждение_TR_2015_Сентябрь.MP3": {
+      "out": "/workspace/griffith/library/audio/transcripts/18_Раннее_пробуждение_TR_2015_Сентябрь.md",
+      "chars": 3803,
+      "minutes": 5.78,
+      "elapsed_sec": 27.4
+    },
+    "9. Мыслеформы (TR 2015 Сентябрь).MP3": {
+      "out": "/workspace/griffith/library/audio/transcripts/9_Мыслеформы_TR_2015_Сентябрь.md",
+      "chars": 3923,
+      "minutes": 6.71,
+      "elapsed_sec": 34.7
+    },
+    "31. Эфир 8 (TR 2015 Сентябрь).MP3": {
+      "out": "/workspace/griffith/library/audio/transcripts/31_Эфир_8_TR_2015_Сентябрь.md",
+      "chars": 4272,
+      "minutes": 6.78,
+      "elapsed_sec": 39.8
+    }
+  },
+  "failed": {}
+}
