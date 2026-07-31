@@ -15,7 +15,6 @@ from aiogram import Bot, Dispatcher, F
 from aiogram.filters import Command, CommandStart
 from aiogram.types import BufferedInputFile, Message
 from dotenv import load_dotenv
-from faster_whisper import WhisperModel
 
 load_dotenv()
 
@@ -48,7 +47,12 @@ if shutil.which("ffmpeg") is None:
 
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
-model: WhisperModel | None = None
+
+# Whisper is loaded in a background thread after polling starts.
+_model = None
+_model_error: str | None = None
+_model_ready = asyncio.Event()
+_model_lock = asyncio.Lock()
 
 TMP_ROOT = Path(__file__).resolve().parent / "tmp"
 TMP_ROOT.mkdir(exist_ok=True)
@@ -58,22 +62,42 @@ def is_allowed(user_id: int | None) -> bool:
     return user_id is not None and user_id in ALLOWED_USER_IDS
 
 
-def get_model() -> WhisperModel:
-    global model
-    if model is None:
-        log.info(
-            "Loading Whisper model=%s device=%s compute=%s",
-            WHISPER_MODEL,
-            WHISPER_DEVICE,
-            WHISPER_COMPUTE_TYPE,
-        )
-        model = WhisperModel(
-            WHISPER_MODEL,
-            device=WHISPER_DEVICE,
-            compute_type=WHISPER_COMPUTE_TYPE,
-        )
-        log.info("Whisper model ready")
+def _load_model_sync():
+    """Blocking Whisper load (runs in a worker thread)."""
+    from faster_whisper import WhisperModel
+
+    log.info(
+        "Loading Whisper model=%s device=%s compute=%s (can take several minutes first time)",
+        WHISPER_MODEL,
+        WHISPER_DEVICE,
+        WHISPER_COMPUTE_TYPE,
+    )
+    model = WhisperModel(
+        WHISPER_MODEL,
+        device=WHISPER_DEVICE,
+        compute_type=WHISPER_COMPUTE_TYPE,
+    )
+    log.info("Whisper model ready")
     return model
+
+
+async def ensure_model_ready(message: Message) -> bool:
+    """Wait until model is loaded; tell the user if still downloading."""
+    if _model_ready.is_set() and _model is not None:
+        return True
+    if _model_error:
+        await message.answer(f"Модель не загрузилась: {_model_error}")
+        return False
+
+    await message.answer(
+        "Модель ещё загружается (первый раз это нормально, 2–10 минут).\n"
+        "Как будет готова — напишите /ready или пришлите файл ещё раз."
+    )
+    try:
+        await asyncio.wait_for(_model_ready.wait(), timeout=1.0)
+    except TimeoutError:
+        return False
+    return _model is not None
 
 
 def extract_audio(src: Path, dst_wav: Path) -> None:
@@ -97,10 +121,13 @@ def extract_audio(src: Path, dst_wav: Path) -> None:
 
 
 def transcribe_file(media_path: Path) -> str:
+    if _model is None:
+        raise RuntimeError("Whisper model is not loaded yet")
+
     wav_path = media_path.with_suffix(".wav")
     try:
         extract_audio(media_path, wav_path)
-        segments, _info = get_model().transcribe(
+        segments, _info = _model.transcribe(
             str(wav_path),
             language=LANGUAGE,
             vad_filter=True,
@@ -113,10 +140,14 @@ def transcribe_file(media_path: Path) -> str:
             wav_path.unlink(missing_ok=True)
 
 
-async def download_telegram_file(message: Message, file_id: str, suffix: str) -> Path:
+async def download_telegram_file(file_id: str, suffix: str) -> Path:
     file = await bot.get_file(file_id)
     if not file.file_path:
         raise RuntimeError("Telegram did not return file_path")
+
+    # Bot API limit for getFile is 20 MB
+    if file.file_size and file.file_size > 20 * 1024 * 1024:
+        raise RuntimeError("Файл больше 20 МБ — Telegram Bot API такое не отдаёт боту")
 
     workdir = Path(tempfile.mkdtemp(prefix="tg_", dir=TMP_ROOT))
     dest = workdir / f"input{suffix}"
@@ -125,15 +156,21 @@ async def download_telegram_file(message: Message, file_id: str, suffix: str) ->
 
 
 async def handle_media(message: Message, file_id: str, suffix: str, label: str) -> None:
-    if not is_allowed(message.from_user.id if message.from_user else None):
+    user_id = message.from_user.id if message.from_user else None
+    log.info("Incoming %s from user_id=%s chat_id=%s", label, user_id, message.chat.id)
+
+    if not is_allowed(user_id):
         await message.answer("Доступ запрещён.")
+        return
+
+    if not await ensure_model_ready(message):
         return
 
     status = await message.answer(f"Принял {label}. Расшифровываю…")
     media_path: Path | None = None
 
     try:
-        media_path = await download_telegram_file(message, file_id, suffix)
+        media_path = await download_telegram_file(file_id, suffix)
         text = await asyncio.to_thread(transcribe_file, media_path)
 
         if not text:
@@ -157,13 +194,31 @@ async def handle_media(message: Message, file_id: str, suffix: str, label: str) 
 
 @dp.message(CommandStart())
 async def cmd_start(message: Message) -> None:
+    user_id = message.from_user.id if message.from_user else None
+    log.info("/start from user_id=%s", user_id)
+    if not is_allowed(user_id):
+        await message.answer(f"Доступ запрещён. Ваш id: {user_id}")
+        return
+
+    ready = "готова ✅" if _model_ready.is_set() and _model is not None else "ещё загружается ⏳"
+    await message.answer(
+        f"Бот онлайн. Модель: {ready}\n\n"
+        "Пришлите голосовое, аудио (mp3), видео или кружок.\n"
+        "Отвечу .txt файлом с расшифровкой."
+    )
+
+
+@dp.message(Command("ready"))
+async def cmd_ready(message: Message) -> None:
     if not is_allowed(message.from_user.id if message.from_user else None):
         await message.answer("Доступ запрещён.")
         return
-    await message.answer(
-        "Пришлите голосовое, аудио, видео или видеосообщение (кружок).\n"
-        "Отвечу .txt файлом с расшифровкой на русском."
-    )
+    if _model_error:
+        await message.answer(f"Ошибка загрузки модели: {_model_error}")
+    elif _model_ready.is_set() and _model is not None:
+        await message.answer("Модель готова. Можно присылать файлы.")
+    else:
+        await message.answer("Модель ещё загружается. Подождите и снова /ready")
 
 
 @dp.message(Command("help"))
@@ -223,11 +278,43 @@ async def on_document(message: Message) -> None:
     await handle_media(message, message.document.file_id, suffix or ".bin", label)
 
 
+@dp.message()
+async def on_other(message: Message) -> None:
+    user_id = message.from_user.id if message.from_user else None
+    log.info("Unhandled message from user_id=%s content_type=%s", user_id, message.content_type)
+    if not is_allowed(user_id):
+        return
+    await message.answer(
+        "Я принимаю только голосовые / аудио / видео / кружки / mp3-файлы.\n"
+        "Напишите /start"
+    )
+
+
+async def _preload_model() -> None:
+    global _model, _model_error
+    try:
+        loaded = await asyncio.to_thread(_load_model_sync)
+        _model = loaded
+        log.info("Background model preload finished OK")
+    except Exception as exc:  # noqa: BLE001
+        _model_error = str(exc)
+        log.exception("Background model preload failed")
+    finally:
+        _model_ready.set()
+
+
 async def main() -> None:
-    # Warm up model at startup so first message is faster.
-    await asyncio.to_thread(get_model)
     me = await bot.get_me()
-    log.info("Bot @%s started. Allowed users: %s", me.username, sorted(ALLOWED_USER_IDS))
+    log.info(
+        "Bot @%s starting polling NOW. Allowed users: %s",
+        me.username,
+        sorted(ALLOWED_USER_IDS),
+    )
+    log.info("Whisper will load in background — do not close this window")
+
+    # Start model download/load without blocking Telegram updates.
+    asyncio.create_task(_preload_model())
+
     await dp.start_polling(bot)
 
 
