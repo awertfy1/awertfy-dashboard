@@ -9,6 +9,7 @@ import os
 import shutil
 import subprocess
 import tempfile
+from dataclasses import dataclass
 from pathlib import Path
 
 from aiogram import Bot, Dispatcher, F
@@ -76,6 +77,27 @@ TMP_ROOT = Path(__file__).resolve().parent / "tmp"
 TMP_ROOT.mkdir(exist_ok=True)
 
 
+@dataclass
+class QueueJob:
+    chat_id: int
+    user_id: int
+    message_id: int
+    file_id: str
+    suffix: str
+    label: str
+    number: int
+
+
+job_queue: asyncio.Queue[QueueJob | None] = asyncio.Queue()
+queue_lock = asyncio.Lock()
+queued_total = 0
+done_total = 0
+failed_total = 0
+current_job: QueueJob | None = None
+# Jobs waiting in queue (not yet taken by worker), for /queue and /clear
+pending_jobs: list[QueueJob] = []
+
+
 def is_allowed(user_id: int | None) -> bool:
     return user_id is not None and user_id in ALLOWED_USER_IDS
 
@@ -97,25 +119,6 @@ def _load_model_sync():
     )
     log.info("Whisper model ready")
     return model
-
-
-async def ensure_model_ready(message: Message) -> bool:
-    """Wait until model is loaded; tell the user if still downloading."""
-    if _model_ready.is_set() and _model is not None:
-        return True
-    if _model_error:
-        await message.answer(f"Модель не загрузилась: {_model_error}")
-        return False
-
-    await message.answer(
-        "Модель ещё загружается (первый раз это нормально, 2–10 минут).\n"
-        "Как будет готова — напишите /ready или пришлите файл ещё раз."
-    )
-    try:
-        await asyncio.wait_for(_model_ready.wait(), timeout=1.0)
-    except TimeoutError:
-        return False
-    return _model is not None
 
 
 def compress_to_wav(src: Path, dst_wav: Path) -> None:
@@ -217,52 +220,109 @@ async def download_telegram_file(file_id: str, suffix: str) -> Path:
     return dest
 
 
-async def handle_media(message: Message, file_id: str, suffix: str, label: str) -> None:
+async def process_job(job: QueueJob) -> None:
+    global done_total, failed_total, current_job
+    current_job = job
+    waiting = len(pending_jobs)
+    status = await bot.send_message(
+        job.chat_id,
+        f"#{job.number}: разбираю {job.label}…\n"
+        f"В очереди ещё: {waiting}",
+        reply_to_message_id=job.message_id,
+    )
+    media_path: Path | None = None
+
+    try:
+        if not _model_ready.is_set():
+            await status.edit_text(f"#{job.number}: жду загрузки модели…")
+            await _model_ready.wait()
+        if _model_error or _model is None:
+            raise RuntimeError(_model_error or "Модель не загружена")
+
+        await status.edit_text(f"#{job.number}: скачиваю…")
+        media_path = await download_telegram_file(job.file_id, job.suffix)
+
+        await status.edit_text(f"#{job.number}: сжимаю…")
+        wav_path = media_path.with_name("compressed.wav")
+        await asyncio.to_thread(compress_to_wav, media_path, wav_path)
+
+        await status.edit_text(f"#{job.number}: расшифровываю…")
+        text = await asyncio.to_thread(transcribe_wav, wav_path)
+
+        if not text:
+            await status.edit_text(f"#{job.number}: речь не распознана.")
+            failed_total += 1
+            return
+
+        filename = f"transcript_{job.number}_{job.message_id}.txt"
+        doc = BufferedInputFile(text.encode("utf-8"), filename=filename)
+        await bot.send_document(
+            chat_id=job.chat_id,
+            document=doc,
+            caption=f"#{job.number}: готово.",
+            reply_to_message_id=job.message_id,
+        )
+        await status.delete()
+        done_total += 1
+    except Exception as exc:  # noqa: BLE001
+        log.exception("Job #%s failed", job.number)
+        failed_total += 1
+        try:
+            await status.edit_text(f"#{job.number}: ошибка: {exc}")
+        except Exception:  # noqa: BLE001
+            pass
+    finally:
+        current_job = None
+        if media_path is not None:
+            shutil.rmtree(media_path.parent, ignore_errors=True)
+
+
+async def queue_worker() -> None:
+    log.info("Queue worker started")
+    while True:
+        job = await job_queue.get()
+        try:
+            if job is None:
+                return
+            async with queue_lock:
+                if job in pending_jobs:
+                    pending_jobs.remove(job)
+            await process_job(job)
+        finally:
+            job_queue.task_done()
+
+
+async def enqueue_media(message: Message, file_id: str, suffix: str, label: str) -> None:
+    global queued_total
     user_id = message.from_user.id if message.from_user else None
-    log.info("Incoming %s from user_id=%s chat_id=%s", label, user_id, message.chat.id)
+    log.info("Enqueue %s from user_id=%s", label, user_id)
 
     if not is_allowed(user_id):
         await message.answer("Доступ запрещён.")
         return
 
-    if not await ensure_model_ready(message):
-        return
-
-    status = await message.answer(
-        f"Принял {label}. Скачиваю…\n"
-        "Большое видео может идти 10–40 минут — не закрывайте Terminal."
-    )
-    media_path: Path | None = None
-    wav_path: Path | None = None
-
-    try:
-        media_path = await download_telegram_file(file_id, suffix)
-
-        await status.edit_text("Сжимаю аудио…")
-        assert media_path is not None
-        wav_path = media_path.with_name("compressed.wav")
-        await asyncio.to_thread(compress_to_wav, media_path, wav_path)
-
-        await status.edit_text("Расшифровываю…")
-        text = await asyncio.to_thread(transcribe_wav, wav_path)
-
-        if not text:
-            await status.edit_text("Речь не распознана (тишина или очень шумно).")
-            return
-
-        filename = f"transcript_{message.message_id}.txt"
-        doc = BufferedInputFile(text.encode("utf-8"), filename=filename)
-        await message.answer_document(
-            document=doc,
-            caption="Готово. Текст в файле.",
+    async with queue_lock:
+        queued_total += 1
+        number = queued_total
+        job = QueueJob(
+            chat_id=message.chat.id,
+            user_id=user_id or 0,
+            message_id=message.message_id,
+            file_id=file_id,
+            suffix=suffix,
+            label=label,
+            number=number,
         )
-        await status.delete()
-    except Exception as exc:  # noqa: BLE001 — show user-friendly error
-        log.exception("Transcription failed")
-        await status.edit_text(f"Ошибка: {exc}")
-    finally:
-        if media_path is not None:
-            shutil.rmtree(media_path.parent, ignore_errors=True)
+        pending_jobs.append(job)
+        position = len(pending_jobs) + (1 if current_job else 0)
+
+    await job_queue.put(job)
+    await message.answer(
+        f"Добавлено в очередь как #{number} ({label}).\n"
+        f"Сейчас в ожидании: {position}\n"
+        "Можете кидать следующие файлы — разберу по одному.\n"
+        "/queue — статус, /clear — очистить очередь"
+    )
 
 
 @dp.message(CommandStart())
@@ -281,8 +341,11 @@ async def cmd_start(message: Message) -> None:
     )
     await message.answer(
         f"Бот онлайн.\nМодель: {ready}\nAPI: {api_mode}\n\n"
-        "Перешлите голосовое, аудио, видео или кружок.\n"
-        "Я сам скачаю → сжамаю → пришлю .txt"
+        "Кидайте много голосовых/аудио/видео подряд.\n"
+        "Я складываю в очередь и разбираю по одному → .txt\n\n"
+        "/queue — что в очереди\n"
+        "/clear — очистить очередь\n"
+        "/ready — готова ли модель"
     )
 
 
@@ -299,6 +362,61 @@ async def cmd_ready(message: Message) -> None:
         await message.answer("Модель ещё загружается. Подождите и снова /ready")
 
 
+@dp.message(Command("queue"))
+async def cmd_queue(message: Message) -> None:
+    if not is_allowed(message.from_user.id if message.from_user else None):
+        await message.answer("Доступ запрещён.")
+        return
+
+    async with queue_lock:
+        pending = list(pending_jobs)
+        current = current_job
+
+    lines = [
+        f"Готово: {done_total}",
+        f"Ошибки: {failed_total}",
+        f"Всего принято: {queued_total}",
+    ]
+    if current:
+        lines.append(f"Сейчас: #{current.number} ({current.label})")
+    else:
+        lines.append("Сейчас: ничего")
+
+    if pending:
+        preview = ", ".join(f"#{j.number}" for j in pending[:15])
+        if len(pending) > 15:
+            preview += f" … +{len(pending) - 15}"
+        lines.append(f"В очереди ({len(pending)}): {preview}")
+    else:
+        lines.append("В очереди: пусто")
+
+    await message.answer("\n".join(lines))
+
+
+@dp.message(Command("clear"))
+async def cmd_clear(message: Message) -> None:
+    if not is_allowed(message.from_user.id if message.from_user else None):
+        await message.answer("Доступ запрещён.")
+        return
+
+    removed = 0
+    async with queue_lock:
+        removed = len(pending_jobs)
+        pending_jobs.clear()
+        # Drain asyncio queue without touching the job currently processing.
+        while True:
+            try:
+                job_queue.get_nowait()
+                job_queue.task_done()
+            except asyncio.QueueEmpty:
+                break
+
+    await message.answer(
+        f"Очередь очищена ({removed} шт.).\n"
+        "Текущий файл, если уже обрабатывается, доделается."
+    )
+
+
 @dp.message(Command("help"))
 async def cmd_help(message: Message) -> None:
     await cmd_start(message)
@@ -307,27 +425,27 @@ async def cmd_help(message: Message) -> None:
 @dp.message(F.voice)
 async def on_voice(message: Message) -> None:
     assert message.voice
-    await handle_media(message, message.voice.file_id, ".ogg", "голосовое")
+    await enqueue_media(message, message.voice.file_id, ".ogg", "голосовое")
 
 
 @dp.message(F.audio)
 async def on_audio(message: Message) -> None:
     assert message.audio
     suffix = Path(message.audio.file_name or "audio.mp3").suffix or ".mp3"
-    await handle_media(message, message.audio.file_id, suffix, "аудио")
+    await enqueue_media(message, message.audio.file_id, suffix, "аудио")
 
 
 @dp.message(F.video)
 async def on_video(message: Message) -> None:
     assert message.video
     suffix = Path(message.video.file_name or "video.mp4").suffix or ".mp4"
-    await handle_media(message, message.video.file_id, suffix, "видео")
+    await enqueue_media(message, message.video.file_id, suffix, "видео")
 
 
 @dp.message(F.video_note)
 async def on_video_note(message: Message) -> None:
     assert message.video_note
-    await handle_media(message, message.video_note.file_id, ".mp4", "кружок")
+    await enqueue_media(message, message.video_note.file_id, ".mp4", "кружок")
 
 
 @dp.message(F.document)
@@ -353,7 +471,7 @@ async def on_document(message: Message) -> None:
         return
 
     label = "видеофайл" if (suffix in video_ext or mime.startswith("video/")) else "аудиофайл"
-    await handle_media(message, message.document.file_id, suffix or ".bin", label)
+    await enqueue_media(message, message.document.file_id, suffix or ".bin", label)
 
 
 @dp.message()
@@ -363,8 +481,8 @@ async def on_other(message: Message) -> None:
     if not is_allowed(user_id):
         return
     await message.answer(
-        "Я принимаю только голосовые / аудио / видео / кружки / mp3-файлы.\n"
-        "Напишите /start"
+        "Кидайте аудио/видео файлы пачкой — я поставлю в очередь.\n"
+        "/queue /clear /start"
     )
 
 
@@ -392,6 +510,7 @@ async def main() -> None:
     log.info("Whisper will load in background — do not close this window")
 
     asyncio.create_task(_preload_model())
+    asyncio.create_task(queue_worker())
     await dp.start_polling(bot)
 
 
