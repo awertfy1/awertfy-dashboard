@@ -43,7 +43,7 @@
   var dayLabel = document.getElementById("day-label");
   var quoteTextEl = document.getElementById("quote-text");
   var quoteAuthorEl = document.getElementById("quote-author");
-  var quoteCursorEl = document.querySelector(".quote-text .quote-cursor");
+  var quoteCursorEl = document.querySelector(".quote-block > .quote-cursor");
   var authorCursorEl = document.querySelector(".author-cursor");
   var balanceReel = document.getElementById("balance-reel");
 

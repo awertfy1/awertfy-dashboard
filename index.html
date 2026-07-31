@@ -4,77 +4,122 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>awertfy</title>
+  <meta name="description" content="awertfy — personal space." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css?v=5" />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css?v=6" />
 </head>
 <body>
-  <div class="page">
-    <p class="top-greeting">welcome</p>
+  <div class="grain" aria-hidden="true"></div>
 
-    <header class="profile-header">
-      <div class="banner">
-        <img src="assets/banner-mountain.jpg" alt="" class="banner-img" width="1024" height="682" />
+  <header class="topbar">
+    <a class="logo" href="/">awertfy<span>®</span></a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#bio">bio</a>
+      <a href="#focus">focus</a>
+      <a href="#path">path</a>
+    </nav>
+    <a class="top-cta" href="https://t.me/awertfy" target="_blank" rel="noopener noreferrer">telegram</a>
+  </header>
+
+  <section class="hero" aria-label="Hero">
+    <div class="hero-copy">
+      <p class="eyebrow reveal">welcome</p>
+      <h1 class="brand reveal">AWERTFY</h1>
+      <p class="lede reveal">
+        Personal space for study, work, movement — and whatever comes next.
+      </p>
+      <a class="pill reveal" href="https://t.me/awertfy" target="_blank" rel="noopener noreferrer">
+        Get in touch
+        <span class="pill-arrow" aria-hidden="true">↗</span>
+      </a>
+    </div>
+
+    <figure class="hero-visual reveal">
+      <img src="assets/hero-dither.png" alt="" width="1024" height="690" />
+    </figure>
+
+    <a class="create-chip reveal" href="https://t.me/awertfy" target="_blank" rel="noopener noreferrer">
+      <span>What will you create?</span>
+      <span class="create-mark" aria-hidden="true"></span>
+    </a>
+  </section>
+
+  <main class="page">
+    <section class="bio" id="bio">
+      <div class="bio-head">
+        <p class="bio-label">BIO</p>
       </div>
-    </header>
 
-    <h1 class="username"><span class="pipe">|</span>awertfy</h1>
-
-    <blockquote class="quote">
-      <p class="quote-text"><span id="quote-text"></span><span class="quote-cursor" aria-hidden="true">|</span></p>
-      <p class="quote-author-line"><span id="quote-author"></span><span class="quote-cursor author-cursor" aria-hidden="true">|</span></p>
-    </blockquote>
-
-    <main class="grid">
-      <section class="col col-left">
-        <div class="counter" id="counter" aria-live="polite">
-          <div class="counter-unit">
-            <span class="counter-value" id="months">0</span>
-            <span class="counter-label">months</span>
-          </div>
-          <div class="counter-unit">
-            <span class="counter-value" id="days">0</span>
-            <span class="counter-label">days</span>
-          </div>
-          <div class="counter-unit">
-            <span class="counter-value" id="minutes">0</span>
-            <span class="counter-label">minutes</span>
-          </div>
-          <div class="counter-unit">
-            <span class="counter-value" id="seconds">0</span>
-            <span class="counter-label">seconds</span>
-          </div>
+      <div class="bio-grid">
+        <div class="bio-col">
+          <p><span class="muted">birthday:</span> 22.11</p>
+          <p>
+            <span class="muted">balance:</span>
+            $<span class="balance-slot"><span class="balance-reel" id="balance-reel"><span class="balance-num">15</span></span></span>
+          </p>
+          <p class="quote-block">
+            <span id="quote-text"></span><span class="quote-cursor" aria-hidden="true">|</span>
+            <br />
+            <span class="quote-author" id="quote-author"></span><span class="quote-cursor author-cursor" aria-hidden="true">|</span>
+          </p>
         </div>
 
-        <div class="links-grid">
-          <div class="link-item"><a href="https://t.me/awertfy" target="_blank" rel="noopener noreferrer"><span class="bar">|</span> telegram @awertfy</a></div>
-          <div class="link-item"><span class="bar">|</span> balance : <span class="balance-slot"><span class="balance-reel" id="balance-reel"><span class="balance-num">15</span></span></span>$</div>
-          <div class="link-item"><a href="https://music.yandex.ru/playlists/lk.5f6472e1-83b2-4dea-b396-37c7a08ac667?utm_source=desktop&utm_medium=copy_link" target="_blank" rel="noopener noreferrer"><span class="bar">|</span> music</a></div>
-          <div class="link-item"><a href="https://pin.it/2qXwwrw3d" target="_blank" rel="noopener noreferrer"><span class="bar">|</span> pinterest</a></div>
+        <div class="bio-col links">
+          <a href="https://t.me/awertfy" target="_blank" rel="noopener noreferrer">Telegram</a>
+          <a href="https://music.yandex.ru/playlists/lk.5f6472e1-83b2-4dea-b396-37c7a08ac667?utm_source=desktop&utm_medium=copy_link" target="_blank" rel="noopener noreferrer">Music</a>
+          <a href="https://pin.it/2qXwwrw3d" target="_blank" rel="noopener noreferrer">Pinterest</a>
         </div>
 
-        <div class="todo-block">
-          <h2 class="section-title"><span class="bar">|</span> things to do</h2>
-          <ul class="todo-list">
-            <li class="todo-item done" data-todo="study">
-              <button type="button" class="checkbox checked" aria-pressed="true" aria-label="study"></button>
-              <span class="todo-text">study</span>
-            </li>
-            <li class="todo-item" data-todo="clean-room">
-              <button type="button" class="checkbox" aria-pressed="false" aria-label="clean room"></button>
-              <span class="todo-text">clean room</span>
-            </li>
-            <li class="todo-item" data-todo="work">
-              <button type="button" class="checkbox" aria-pressed="false" aria-label="work"></button>
-              <span class="todo-text">work</span>
-            </li>
-            <li class="todo-item" data-todo="driving">
-              <button type="button" class="checkbox" aria-pressed="false" aria-label="driving"></button>
-              <span class="todo-text">driving</span>
-            </li>
-          </ul>
+        <div class="bio-col portrait-wrap">
+          <figure class="portrait">
+            <img src="assets/portrait.jpg" alt="awertfy" width="800" height="800" />
+          </figure>
         </div>
+      </div>
+
+      <div class="counter" id="counter" aria-live="polite">
+        <div class="counter-unit">
+          <span class="counter-value" id="months">0</span>
+          <span class="counter-label">months</span>
+        </div>
+        <div class="counter-unit">
+          <span class="counter-value" id="days">0</span>
+          <span class="counter-label">days</span>
+        </div>
+        <div class="counter-unit">
+          <span class="counter-value" id="minutes">0</span>
+          <span class="counter-label">minutes</span>
+        </div>
+        <div class="counter-unit">
+          <span class="counter-value" id="seconds">0</span>
+          <span class="counter-label">seconds</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="focus" id="focus">
+      <div class="focus-left">
+        <h2 class="section-title">things to do</h2>
+        <ul class="todo-list">
+          <li class="todo-item done" data-todo="study">
+            <button type="button" class="checkbox checked" aria-pressed="true" aria-label="study"></button>
+            <span class="todo-text">study</span>
+          </li>
+          <li class="todo-item" data-todo="clean-room">
+            <button type="button" class="checkbox" aria-pressed="false" aria-label="clean room"></button>
+            <span class="todo-text">clean room</span>
+          </li>
+          <li class="todo-item" data-todo="work">
+            <button type="button" class="checkbox" aria-pressed="false" aria-label="work"></button>
+            <span class="todo-text">work</span>
+          </li>
+          <li class="todo-item" data-todo="driving">
+            <button type="button" class="checkbox" aria-pressed="false" aria-label="driving"></button>
+            <span class="todo-text">driving</span>
+          </li>
+        </ul>
 
         <div class="progress-group">
           <div class="progress-item">
@@ -90,26 +135,25 @@
             <span class="progress-label" id="day-label">Day: 0 / 29220</span>
           </div>
         </div>
-      </section>
+      </div>
 
-      <section class="col col-right">
-        <div class="side-column">
-          <figure class="side-photo">
-            <img src="assets/side-photo.jpg?v=2" alt="" width="736" height="981" />
-          </figure>
-          <ul class="side-links">
-            <li><span class="bar">|</span> happiness</li>
-            <li><span class="bar">|</span> aspiration</li>
-            <li><span class="bar">|</span> search</li>
-            <li><span class="bar">|</span> result</li>
-            <li><span class="bar">|</span> movement</li>
-            <li><span class="bar">|</span> perspective</li>
-            <li><span class="bar">|</span> continue</li>
-          </ul>
-        </div>
-      </section>
-    </main>
-  </div>
+      <ul class="side-links" id="path">
+        <li>happiness</li>
+        <li>aspiration</li>
+        <li>search</li>
+        <li>result</li>
+        <li>movement</li>
+        <li>perspective</li>
+        <li>continue</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>awertfy</span>
+    <span class="cursor-bar" aria-hidden="true">|</span>
+  </footer>
+
   <script src="js/main.js" defer></script>
 </body>
 </html>
