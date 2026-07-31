@@ -32,6 +32,8 @@ source .venv/bin/activate
 echo "==> Installing Python packages..."
 pip install --upgrade pip
 pip install -r requirements.txt
+# Ensure transitive deps are present (Python 3.13 / pip quirks)
+pip install requests tqdm huggingface_hub tokenizers av ctranslate2
 
 if [[ ! -f .env ]]; then
   echo "==> Creating .env from .env.example"
