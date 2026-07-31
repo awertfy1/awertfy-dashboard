@@ -12,6 +12,7 @@ import tempfile
 from pathlib import Path
 
 from aiogram import Bot, Dispatcher, F
+from aiogram.exceptions import TelegramBadRequest
 from aiogram.filters import Command, CommandStart
 from aiogram.types import BufferedInputFile, Message
 from dotenv import load_dotenv
@@ -141,13 +142,25 @@ def transcribe_file(media_path: Path) -> str:
 
 
 async def download_telegram_file(file_id: str, suffix: str) -> Path:
-    file = await bot.get_file(file_id)
+    try:
+        file = await bot.get_file(file_id)
+    except TelegramBadRequest as exc:
+        # Official Bot API cannot download files larger than ~20 MB.
+        if "file is too big" in str(exc).lower():
+            raise RuntimeError(
+                "Файл больше 20 МБ — лимит Telegram для ботов.\n"
+                "Сожмите аудио или разрежьте на части покороче и пришлите снова."
+            ) from exc
+        raise
+
     if not file.file_path:
         raise RuntimeError("Telegram did not return file_path")
 
-    # Bot API limit for getFile is 20 MB
     if file.file_size and file.file_size > 20 * 1024 * 1024:
-        raise RuntimeError("Файл больше 20 МБ — Telegram Bot API такое не отдаёт боту")
+        raise RuntimeError(
+            "Файл больше 20 МБ — лимит Telegram для ботов.\n"
+            "Сожмите аудио или разрежьте на части покороче и пришлите снова."
+        )
 
     workdir = Path(tempfile.mkdtemp(prefix="tg_", dir=TMP_ROOT))
     dest = workdir / f"input{suffix}"
@@ -204,7 +217,8 @@ async def cmd_start(message: Message) -> None:
     await message.answer(
         f"Бот онлайн. Модель: {ready}\n\n"
         "Пришлите голосовое, аудио (mp3), видео или кружок.\n"
-        "Отвечу .txt файлом с расшифровкой."
+        "Отвечу .txt файлом с расшифровкой.\n\n"
+        "Лимит Telegram: файл до 20 МБ."
     )
 
 
