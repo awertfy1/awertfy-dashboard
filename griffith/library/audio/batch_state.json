@@ -143,6 +143,48 @@
       "chars": 5971,
       "minutes": 8.8,
       "elapsed_sec": 66.4
+    },
+    "6. Эфир TR 2015 (Июнь).MP3": {
+      "out": "/workspace/griffith/library/audio/transcripts/6_Эфир_TR_2015_Июнь.md",
+      "chars": 6138,
+      "minutes": 8.86,
+      "elapsed_sec": 63.9
+    },
+    "11_Урок№_6_Уровень_Удовольствия,_Доступный_Тебе.MP3": {
+      "out": "/workspace/griffith/library/audio/transcripts/11_УрокN_6_Уровень_Удовольствия_Доступныи_Тебе.md",
+      "chars": 5399,
+      "minutes": 9.21,
+      "elapsed_sec": 77.2
+    },
+    "1. Эфир TR 2015 (Июнь).MP3": {
+      "out": "/workspace/griffith/library/audio/transcripts/1_Эфир_TR_2015_Июнь.md",
+      "chars": 6483,
+      "minutes": 9.34,
+      "elapsed_sec": 79.1
+    },
+    "12_Половое_воздержание_TR_2015_Сентябрь.MP3": {
+      "out": "/workspace/griffith/library/audio/transcripts/12_Половое_воздержание_TR_2015_Сентябрь.md",
+      "chars": 5939,
+      "minutes": 9.46,
+      "elapsed_sec": 63.1
+    },
+    "8_Урок_№3_Геометрия_тела_в_пространстве.MP3": {
+      "out": "/workspace/griffith/library/audio/transcripts/8_Урок_N3_Геометрия_тела_в_пространстве.md",
+      "chars": 6107,
+      "minutes": 9.67,
+      "elapsed_sec": 55.4
+    },
+    "16. Урок №10. Принятие Отца.MP3": {
+      "out": "/workspace/griffith/library/audio/transcripts/16_Урок_N10_Принятие_Отца.md",
+      "chars": 7130,
+      "minutes": 9.67,
+      "elapsed_sec": 63.8
+    },
+    "13. Принятие смерти (TR 2015 Сентябрь).MP3": {
+      "out": "/workspace/griffith/library/audio/transcripts/13_Принятие_смерти_TR_2015_Сентябрь.md",
+      "chars": 6669,
+      "minutes": 9.72,
+      "elapsed_sec": 67.2
     }
   },
   "failed": {}

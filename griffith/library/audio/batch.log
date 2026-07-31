@@ -284,3 +284,45 @@ ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information ava
 ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information available (required by /lib/x86_64-linux-gnu/libcaca.so.0)
 22:10:12 [25/68] START 6. Эфир TR 2015 (Июнь).MP3 (8.9 min)
 22:10:12 [25/68] START 6. Эфир TR 2015 (Июнь).MP3 (8.9 min)
+22:11:16 [25/68] DONE 6. Эфир TR 2015 (Июнь).MP3 chars=6138 wall=1.1m out=6_Эфир_TR_2015_Июнь.md
+22:11:16 [25/68] DONE 6. Эфир TR 2015 (Июнь).MP3 chars=6138 wall=1.1m out=6_Эфир_TR_2015_Июнь.md
+ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information available (required by /lib/x86_64-linux-gnu/libcaca.so.0)
+ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information available (required by /lib/x86_64-linux-gnu/libcaca.so.0)
+22:11:16 [26/68] START 11_Урок№_6_Уровень_Удовольствия,_Доступный_Тебе.MP3 (9.2 min)
+22:11:16 [26/68] START 11_Урок№_6_Уровень_Удовольствия,_Доступный_Тебе.MP3 (9.2 min)
+22:12:34 [26/68] DONE 11_Урок№_6_Уровень_Удовольствия,_Доступный_Тебе.MP3 chars=5399 wall=1.3m out=11_УрокN_6_Уровень_Удовольствия_Доступныи_Тебе.md
+22:12:34 [26/68] DONE 11_Урок№_6_Уровень_Удовольствия,_Доступный_Тебе.MP3 chars=5399 wall=1.3m out=11_УрокN_6_Уровень_Удовольствия_Доступныи_Тебе.md
+ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information available (required by /lib/x86_64-linux-gnu/libcaca.so.0)
+ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information available (required by /lib/x86_64-linux-gnu/libcaca.so.0)
+22:12:34 [27/68] START 1. Эфир TR 2015 (Июнь).MP3 (9.3 min)
+22:12:34 [27/68] START 1. Эфир TR 2015 (Июнь).MP3 (9.3 min)
+22:13:53 [27/68] DONE 1. Эфир TR 2015 (Июнь).MP3 chars=6483 wall=1.3m out=1_Эфир_TR_2015_Июнь.md
+22:13:53 [27/68] DONE 1. Эфир TR 2015 (Июнь).MP3 chars=6483 wall=1.3m out=1_Эфир_TR_2015_Июнь.md
+ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information available (required by /lib/x86_64-linux-gnu/libcaca.so.0)
+ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information available (required by /lib/x86_64-linux-gnu/libcaca.so.0)
+22:13:53 [28/68] START 12_Половое_воздержание_TR_2015_Сентябрь.MP3 (9.5 min)
+22:13:53 [28/68] START 12_Половое_воздержание_TR_2015_Сентябрь.MP3 (9.5 min)
+22:14:56 [28/68] DONE 12_Половое_воздержание_TR_2015_Сентябрь.MP3 chars=5939 wall=1.1m out=12_Половое_воздержание_TR_2015_Сентябрь.md
+22:14:56 [28/68] DONE 12_Половое_воздержание_TR_2015_Сентябрь.MP3 chars=5939 wall=1.1m out=12_Половое_воздержание_TR_2015_Сентябрь.md
+ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information available (required by /lib/x86_64-linux-gnu/libcaca.so.0)
+ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information available (required by /lib/x86_64-linux-gnu/libcaca.so.0)
+22:14:56 [29/68] START 8_Урок_№3_Геометрия_тела_в_пространстве.MP3 (9.7 min)
+22:14:56 [29/68] START 8_Урок_№3_Геометрия_тела_в_пространстве.MP3 (9.7 min)
+22:15:51 [29/68] DONE 8_Урок_№3_Геометрия_тела_в_пространстве.MP3 chars=6107 wall=0.9m out=8_Урок_N3_Геометрия_тела_в_пространстве.md
+22:15:51 [29/68] DONE 8_Урок_№3_Геометрия_тела_в_пространстве.MP3 chars=6107 wall=0.9m out=8_Урок_N3_Геометрия_тела_в_пространстве.md
+ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information available (required by /lib/x86_64-linux-gnu/libcaca.so.0)
+ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information available (required by /lib/x86_64-linux-gnu/libcaca.so.0)
+22:15:51 [30/68] START 16. Урок №10. Принятие Отца.MP3 (9.7 min)
+22:15:51 [30/68] START 16. Урок №10. Принятие Отца.MP3 (9.7 min)
+22:16:55 [30/68] DONE 16. Урок №10. Принятие Отца.MP3 chars=7130 wall=1.1m out=16_Урок_N10_Принятие_Отца.md
+22:16:55 [30/68] DONE 16. Урок №10. Принятие Отца.MP3 chars=7130 wall=1.1m out=16_Урок_N10_Принятие_Отца.md
+ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information available (required by /lib/x86_64-linux-gnu/libcaca.so.0)
+ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information available (required by /lib/x86_64-linux-gnu/libcaca.so.0)
+22:16:55 [31/68] START 13. Принятие смерти (TR 2015 Сентябрь).MP3 (9.7 min)
+22:16:55 [31/68] START 13. Принятие смерти (TR 2015 Сентябрь).MP3 (9.7 min)
+22:18:02 [31/68] DONE 13. Принятие смерти (TR 2015 Сентябрь).MP3 chars=6669 wall=1.1m out=13_Принятие_смерти_TR_2015_Сентябрь.md
+22:18:02 [31/68] DONE 13. Принятие смерти (TR 2015 Сентябрь).MP3 chars=6669 wall=1.1m out=13_Принятие_смерти_TR_2015_Сентябрь.md
+ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information available (required by /lib/x86_64-linux-gnu/libcaca.so.0)
+ffprobe: /exec-daemon/tmux-root/lib/libncursesw.so.6: no version information available (required by /lib/x86_64-linux-gnu/libcaca.so.0)
+22:18:02 [32/68] START 9_Урок_№4_Лекарство_от_беспомощности.MP3 (9.9 min)
+22:18:02 [32/68] START 9_Урок_№4_Лекарство_от_беспомощности.MP3 (9.9 min)
