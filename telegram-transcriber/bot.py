@@ -36,6 +36,8 @@ WHISPER_COMPUTE_TYPE = os.getenv("WHISPER_COMPUTE_TYPE", "int8").strip() or "int
 # Local Bot API removes the public 20 MB download limit (needs Docker + api_id/hash).
 LOCAL_API_URL = os.getenv("LOCAL_API_URL", "").strip().rstrip("/")
 USE_LOCAL_API = bool(LOCAL_API_URL)
+# Large Telegram videos need a long download timeout (default aiogram is only 30s).
+DOWNLOAD_TIMEOUT_SEC = int(os.getenv("DOWNLOAD_TIMEOUT_SEC", "1800"))
 
 ALLOWED_USER_IDS = {
     int(x.strip())
@@ -179,7 +181,34 @@ async def download_telegram_file(file_id: str, suffix: str) -> Path:
 
     workdir = Path(tempfile.mkdtemp(prefix="tg_", dir=TMP_ROOT))
     dest = workdir / f"input{suffix}"
-    await bot.download_file(file.file_path, destination=dest)
+
+    # Scale timeout a bit with size, but keep a high floor for slow links.
+    timeout = DOWNLOAD_TIMEOUT_SEC
+    if file.file_size:
+        # ~100 KB/s worst case + 5 min buffer
+        sized = int(file.file_size / 100_000) + 300
+        timeout = max(timeout, sized)
+        timeout = min(timeout, 7200)
+
+    log.info(
+        "Downloading file (%s bytes), timeout=%ss",
+        file.file_size if file.file_size is not None else "?",
+        timeout,
+    )
+    try:
+        await bot.download_file(
+            file.file_path,
+            destination=dest,
+            timeout=timeout,
+        )
+    except TimeoutError as exc:
+        raise RuntimeError(
+            f"Скачивание прервалось по таймауту ({timeout} с).\n"
+            "Файл слишком большой/медленный для бота.\n"
+            "Надёжнее: скачайте видео в Telegram Desktop → "
+            "сожмите в mp3 через ffmpeg → пришлите лёгкий mp3 боту."
+        ) from exc
+
     log.info(
         "Downloaded %s (%s bytes)",
         dest.name,
@@ -199,7 +228,10 @@ async def handle_media(message: Message, file_id: str, suffix: str, label: str) 
     if not await ensure_model_ready(message):
         return
 
-    status = await message.answer(f"Принял {label}. Скачиваю…")
+    status = await message.answer(
+        f"Принял {label}. Скачиваю…\n"
+        "Большое видео может идти 10–40 минут — не закрывайте Terminal."
+    )
     media_path: Path | None = None
     wav_path: Path | None = None
 
