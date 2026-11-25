@@ -5,7 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#e1140c" />
   <title>awertfy</title>
-  <meta name="description" content="awertfy — personal space." />
+  <meta name="description" content="awertfy — links, music, games." />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="awertfy" />
+  <meta property="og:url" content="https://awertfy.ru/" />
+  <meta property="og:title" content="awertfy" />
+  <meta property="og:description" content="links · music · games" />
+  <meta property="og:image" content="https://awertfy.ru/og.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="awertfy" />
+  <meta name="twitter:image" content="https://awertfy.ru/og.jpg" />
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23e1140c'/%3E%3Ccircle cx='16' cy='16' r='11.5' fill='%23efe9df'/%3E%3Ccircle cx='16' cy='16' r='5.5' fill='%230a0909'/%3E%3C/svg%3E" />
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -1982,6 +1993,317 @@ body { font-size: clamp(0.86rem, 1.5vw, 0.95rem); }
   .create-chip { bottom: auto; margin-top: 0.9rem; }
 }
 
+/* v22: строки birthday / balance — один шрифт, ровная базовая линия */
+.row {
+  align-items: center;
+  padding: 1rem 0;
+}
+
+.row .muted {
+  font-family: var(--cond);
+  font-weight: 600;
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--bone-dim);
+}
+
+.row b {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.12em;
+  height: 1.25em;
+  font-family: var(--cond);
+  font-weight: 800;
+  font-size: clamp(1.1rem, 2.6vw, 1.35rem);
+  line-height: 1.25em;
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.row .cur {
+  color: var(--red);
+}
+
+.row .balance-slot {
+  top: 0;
+  vertical-align: top;
+  min-width: 0;
+  text-align: left;
+}
+
+/* Discord: «copy id» стоит на месте стрелки */
+.link-wrap .link-row { padding-right: 0.4rem; }
+.link-wrap .link-arrow { display: none; }
+
+.copy-id {
+  right: 0.4rem;
+  transition: color 0.3s var(--ease), background 0.3s var(--ease), border-color 0.3s var(--ease), right 0.45s var(--ease);
+}
+
+@media (hover: hover) {
+  .link-wrap:hover .copy-id { right: 1.2rem; }
+}
+
+@media (max-width: 700px) {
+  .link-wrap .link-row { padding-right: 0.2rem; }
+  .copy-id { right: 0.2rem; }
+}
+
+/* =========================================================
+   v23: звук, now playing → плейлист, Simon, Snake, Type
+   ========================================================= */
+
+.top-right {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.sound-btn {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1.5px solid currentColor;
+  color: inherit;
+  transition: background 0.3s var(--ease), color 0.3s var(--ease);
+}
+
+.sound-btn svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sound-btn .spk { fill: currentColor; stroke: none; }
+.sound-btn .wave { display: none; }
+.sound-btn[aria-pressed="true"] .wave { display: inline; animation: pulse 1.4s ease-in-out infinite; }
+.sound-btn[aria-pressed="true"] .mute { display: none; }
+
+@media (hover: hover) {
+  .topbar:not(.is-scrolled) .sound-btn:hover { background: var(--black); color: var(--red); }
+  .topbar.is-scrolled .sound-btn:hover { background: var(--bone); color: var(--black); }
+}
+
+/* now playing — ссылка на плейлист */
+a.quote-block {
+  display: block;
+  color: inherit;
+  transition: color 0.3s var(--ease);
+}
+
+.np-label em {
+  margin-left: auto;
+  font-style: normal;
+  color: var(--red);
+  letter-spacing: 0.14em;
+  opacity: 0.85;
+  transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
+}
+
+@media (hover: hover) {
+  a.quote-block:hover .np-label em { opacity: 1; transform: translateX(-4px); }
+  a.quote-block:hover #quote-text { color: var(--red); }
+}
+
+a.quote-block:active #quote-text { color: var(--red); }
+
+.game--wide { grid-column: 1 / -1; }
+
+.game-note {
+  margin: 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: var(--bone-dim);
+  text-align: center;
+}
+
+/* E — Simon */
+.simon-wrap {
+  display: grid;
+  place-items: center;
+  min-height: clamp(220px, 28vw, 280px);
+}
+
+.simon {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  width: min(100%, 260px);
+  aspect-ratio: 1;
+  padding: 6px;
+  border-radius: 50%;
+  background: var(--black);
+  border: 1.5px solid rgba(239, 233, 223, 0.22);
+}
+
+.simon-pad {
+  position: relative;
+  border: 0;
+  padding: 0;
+  opacity: 0.5;
+  touch-action: manipulation;
+  transition: opacity 0.12s, filter 0.12s, transform 0.12s;
+}
+
+.simon-pad[data-pad="0"] { background: var(--red); border-radius: 100% 0 0 0; }
+.simon-pad[data-pad="1"] { background: #2b2626; border-radius: 0 100% 0 0; }
+.simon-pad[data-pad="2"] { background: var(--bone); border-radius: 0 0 0 100%; }
+.simon-pad[data-pad="3"] { background: var(--red-deep); border-radius: 0 0 100% 0; }
+
+.simon-pad.is-lit {
+  opacity: 1;
+  filter: brightness(1.25);
+  transform: scale(0.97);
+}
+
+.simon-pad[data-pad="1"].is-lit { background: #5a5050; }
+
+.simon.is-locked .simon-pad { pointer-events: none; }
+.simon.is-wrong { animation: shake 0.4s; }
+
+.simon-core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 36%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: var(--black);
+  border: 4px solid var(--ink);
+  color: var(--bone);
+  font-family: var(--cond);
+  font-weight: 800;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  touch-action: manipulation;
+}
+
+.simon-core #simon-label { display: block; }
+.simon-core.is-level #simon-label { font-size: 1.6rem; letter-spacing: 0; }
+
+/* F — Snake */
+.snake-wrap {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: clamp(220px, 28vw, 280px);
+}
+
+.snake-canvas {
+  width: min(100%, 280px);
+  height: auto;
+  aspect-ratio: 1;
+  touch-action: none;
+  border-radius: 50%;
+}
+
+.snake-start { z-index: 2; }
+
+.snake-ctrl {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.snake-score {
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  color: var(--bone-dim);
+}
+
+.snake-score b {
+  font-family: var(--cond);
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: var(--bone);
+}
+
+.dpad {
+  display: grid;
+  grid-template-columns: repeat(3, 40px);
+  grid-template-rows: repeat(2, 40px);
+  gap: 4px;
+}
+
+.dpad button {
+  border: 1.5px solid rgba(239, 233, 223, 0.3);
+  color: var(--bone);
+  font-size: 1rem;
+  touch-action: manipulation;
+  transition: background 0.15s, color 0.15s;
+}
+
+.dpad button:active { background: var(--red); color: var(--black); }
+.dpad [data-dir="up"] { grid-column: 2; grid-row: 1; }
+.dpad [data-dir="left"] { grid-column: 1; grid-row: 2; }
+.dpad [data-dir="down"] { grid-column: 2; grid-row: 2; }
+.dpad [data-dir="right"] { grid-column: 3; grid-row: 2; }
+
+/* G — Type */
+.type-phrase {
+  margin: 0;
+  min-height: 2.6em;
+  font-family: var(--mono);
+  font-size: clamp(1rem, 2.4vw, 1.3rem);
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+  color: rgba(239, 233, 223, 0.35);
+  word-break: break-word;
+}
+
+.type-phrase .ok { color: var(--bone); }
+.type-phrase .bad { color: var(--black); background: var(--red); }
+.type-phrase .cur { box-shadow: inset 0 -2px 0 var(--red); color: var(--bone); }
+
+.type-input {
+  width: 100%;
+  min-height: 50px;
+  padding: 0 1rem;
+  background: var(--black);
+  border: 1.5px solid rgba(239, 233, 223, 0.22);
+  color: var(--bone);
+  font-family: var(--mono);
+  font-size: 16px; /* без зума на iPhone */
+  outline: none;
+  transition: border-color 0.3s var(--ease);
+}
+
+.type-input:focus { border-color: var(--red); }
+.type-input.is-done { border-color: var(--bone); }
+
+.type-skip {
+  min-height: 32px;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  color: var(--bone-dim);
+}
+
+@media (hover: hover) {
+  .type-skip:hover { color: var(--red); }
+}
+
+@media (max-width: 700px) {
+  .top-right { gap: 0.4rem; }
+  .sound-btn { width: 40px; height: 40px; }
+  .np-label em { letter-spacing: 0.06em; }
+}
+
+@media (max-width: 360px) {
+  .top-cta { padding: 0 0.6rem; letter-spacing: 0.08em; }
+  .logo { letter-spacing: 0.06em; }
+}
+
 </style>
   <noscript>
     <style>
@@ -2008,9 +2330,14 @@ body { font-size: clamp(0.86rem, 1.5vw, 0.95rem); }
 
   <header class="topbar" id="topbar">
     <a class="logo" href="/" data-scramble>awertfy<span>®</span></a>
+    <div class="top-right">
+    <button class="sound-btn" id="sound-btn" type="button" aria-pressed="false" aria-label="Sound">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path class="spk" d="M4 9h4l5-4v14l-5-4H4z"/><path class="wave" d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12"/><path class="mute" d="M16 9l6 6M22 9l-6 6"/></svg>
+    </button>
     <a class="top-cta" href="https://t.me/awertfy" target="_blank" rel="noopener noreferrer" data-magnetic>
       <span class="top-cta-dot" aria-hidden="true"></span>telegram
     </a>
+    </div>
   </header>
 
   <section class="hero" id="hero" aria-label="Hero">
@@ -2034,10 +2361,6 @@ body { font-size: clamp(0.86rem, 1.5vw, 0.95rem); }
         <div class="sun-shine"></div>
       </div>
     </figure>
-
-    <p class="lede reveal-up">
-      Personal space for study, work, movement — and whatever comes next.
-    </p>
 
     <a class="create-chip reveal-up" href="#play" data-scroll="play" data-magnetic>
       <span class="create-text">press to play</span>
@@ -2063,17 +2386,17 @@ body { font-size: clamp(0.86rem, 1.5vw, 0.95rem); }
 
       <div class="bio-grid">
         <div class="bio-col info reveal">
-          <p class="row"><span class="muted">birthday:</span> <b>22.11</b></p>
+          <p class="row"><span class="muted">birthday</span> <b>22.11</b></p>
           <p class="row">
-            <span class="muted">balance:</span>
-            <b>$<span class="balance-slot"><span class="balance-reel" id="balance-reel"><span class="balance-num">15</span></span></span></b>
+            <span class="muted">balance</span>
+            <b><span class="cur">$</span><span class="balance-slot"><span class="balance-reel" id="balance-reel"><span class="balance-num">15</span></span></span></b>
           </p>
-          <p class="quote-block">
-            <span class="np-label"><i></i>now playing</span>
+          <a class="quote-block" href="https://music.yandex.ru/playlists/lk.5f6472e1-83b2-4dea-b396-37c7a08ac667?utm_source=desktop&utm_medium=copy_link" target="_blank" rel="noopener noreferrer">
+            <span class="np-label"><i></i>now playing<em>open playlist ↗</em></span>
             <span class="quote-mark" aria-hidden="true">▶</span><span id="quote-text"></span><span class="quote-cursor" aria-hidden="true">|</span>
             <br />
             <span class="quote-author" id="quote-author"></span><span class="quote-cursor author-cursor" aria-hidden="true">|</span>
-          </p>
+          </a>
         </div>
 
         <div class="bio-col links reveal">
@@ -2157,6 +2480,61 @@ body { font-size: clamp(0.86rem, 1.5vw, 0.95rem); }
           <div class="danger">
             <button class="danger-btn" id="danger-btn" type="button"><span>do not press</span></button>
             <p class="danger-msg" id="danger-msg" aria-live="polite">seriously.</p>
+          </div>
+        </article>
+
+        <article class="game reveal">
+          <header class="game-head">
+            <span class="game-tag">E</span>
+            <h3>Simon</h3>
+            <span class="game-best">best <b id="simon-best">—</b></span>
+          </header>
+          <div class="simon-wrap">
+            <div class="simon" id="simon">
+              <button class="simon-pad" data-pad="0" type="button" aria-label="Red pad"></button>
+              <button class="simon-pad" data-pad="1" type="button" aria-label="Black pad"></button>
+              <button class="simon-pad" data-pad="2" type="button" aria-label="Bone pad"></button>
+              <button class="simon-pad" data-pad="3" type="button" aria-label="Dark red pad"></button>
+              <button class="simon-core" id="simon-start" type="button"><span id="simon-label">start</span></button>
+            </div>
+          </div>
+          <p class="game-note" id="simon-msg" aria-live="polite">watch the flashes, repeat the order.</p>
+        </article>
+
+        <article class="game reveal">
+          <header class="game-head">
+            <span class="game-tag">F</span>
+            <h3>Snake</h3>
+            <span class="game-best">best <b id="snake-best">—</b></span>
+          </header>
+          <div class="snake-wrap">
+            <canvas class="snake-canvas" id="snake-canvas" width="340" height="340" aria-label="Snake game field"></canvas>
+            <button class="catch-start snake-start" id="snake-start" type="button">start</button>
+          </div>
+          <div class="snake-ctrl">
+            <span class="snake-score">score <b id="snake-score">0</b></span>
+            <div class="dpad" aria-label="Controls">
+              <button type="button" data-dir="up" aria-label="Up">↑</button>
+              <button type="button" data-dir="left" aria-label="Left">←</button>
+              <button type="button" data-dir="down" aria-label="Down">↓</button>
+              <button type="button" data-dir="right" aria-label="Right">→</button>
+            </div>
+          </div>
+          <p class="game-note">swipe, arrows / WASD or the pad. the circle is the wall.</p>
+        </article>
+
+        <article class="game game--wide reveal">
+          <header class="game-head">
+            <span class="game-tag">G</span>
+            <h3>Type</h3>
+            <span class="game-best">best <b id="type-best">—</b></span>
+          </header>
+          <p class="type-phrase" id="type-phrase" aria-live="polite"></p>
+          <input class="type-input" id="type-input" type="text" inputmode="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="start typing…" aria-label="Type the phrase" />
+          <div class="catch-hud">
+            <span>wpm <b id="type-wpm">0</b></span>
+            <span>accuracy <b id="type-acc">100%</b></span>
+            <button class="type-skip" id="type-skip" type="button">new phrase ↻</button>
           </div>
         </article>
       </div>
@@ -2767,10 +3145,12 @@ body { font-size: clamp(0.86rem, 1.5vw, 0.95rem); }
         timer = setTimeout(function () {
           t0 = performance.now();
           set("go", "tap!", "now now now");
+          SFX.go();
         }, 1300 + Math.random() * 2700);
       } else if (state === "wait") {
         clearTimeout(timer);
         set("early", "too early", "tap to try again");
+        SFX.bad();
       } else if (state === "go") {
         var ms = Math.round(performance.now() - t0);
         var verdict = ms < 200 ? "inhuman." : ms < 260 ? "sharp." : ms < 330 ? "not bad." : "sleepy.";
@@ -2781,6 +3161,7 @@ body { font-size: clamp(0.86rem, 1.5vw, 0.95rem); }
           verdict = "new best — " + verdict;
         }
         set("result", ms + " ms", verdict + " tap to retry");
+        SFX.blip();
       }
     }
 
@@ -2846,6 +3227,7 @@ body { font-size: clamp(0.86rem, 1.5vw, 0.95rem); }
         dot._hit = true;
         clearTimeout(gone);
         score += bad ? -2 : 1;
+        if (bad) SFX.bad(); else SFX.good();
         scoreEl.textContent = score;
         pop(x + size / 2, y + size / 2, bad ? "−2" : "+1", bad);
         if (bad) field.animate([{ transform: "translateX(-6px)" }, { transform: "translateX(6px)" }, { transform: "none" }], { duration: 220 });
@@ -2875,6 +3257,7 @@ body { font-size: clamp(0.86rem, 1.5vw, 0.95rem); }
         msg = "new best: " + score;
       }
       startBtn.textContent = msg + " · again";
+      SFX.win();
       startBtn.hidden = false;
     }
 
@@ -2922,6 +3305,7 @@ body { font-size: clamp(0.86rem, 1.5vw, 0.95rem); }
       var answer = ANSWERS[i];
       setTimeout(function () {
         out.textContent = "";
+        SFX.blip();
         var c = 0;
         (function type() {
           out.textContent = answer.slice(0, ++c);
@@ -2959,11 +3343,13 @@ body { font-size: clamp(0.86rem, 1.5vw, 0.95rem); }
       btn.classList.remove("is-shaking");
       btn.offsetWidth;
       btn.classList.add("is-shaking");
+      SFX.thud();
       if (navigator.vibrate) { try { navigator.vibrate(30); } catch (e) {} }
 
       if (session % 10 === 0) {
         msg.textContent = "you broke it.";
         document.body.classList.add("chaos");
+        SFX.chaos();
         if (navigator.vibrate) { try { navigator.vibrate([80, 40, 80, 40, 160]); } catch (e) {} }
         setTimeout(function () {
           document.body.classList.remove("chaos");
@@ -3034,6 +3420,517 @@ body { font-size: clamp(0.86rem, 1.5vw, 0.95rem); }
     });
   }
 
+
+  /* =========================================================
+     Звук (WebAudio, без файлов). По умолчанию выключен.
+     ========================================================= */
+  var SFX = (function () {
+    var ctx = null;
+    var on = store("sound") === "1";
+    var master = null;
+
+    function ensure() {
+      if (!ctx) {
+        var AC = window.AudioContext || window.webkitAudioContext;
+        if (!AC) return null;
+        ctx = new AC();
+        master = ctx.createGain();
+        master.gain.value = 0.22;
+        master.connect(ctx.destination);
+      }
+      if (ctx.state === "suspended") ctx.resume();
+      return ctx;
+    }
+
+    function tone(freq, dur, type, vol, slide) {
+      if (!on) return;
+      var c = ensure();
+      if (!c) return;
+      var t = c.currentTime;
+      var o = c.createOscillator();
+      var g = c.createGain();
+      o.type = type || "square";
+      o.frequency.setValueAtTime(freq, t);
+      if (slide) o.frequency.exponentialRampToValueAtTime(slide, t + dur);
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(vol || 0.5, t + 0.008);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      o.connect(g);
+      g.connect(master);
+      o.start(t);
+      o.stop(t + dur + 0.02);
+    }
+
+    function noise(dur, vol) {
+      if (!on) return;
+      var c = ensure();
+      if (!c) return;
+      var len = Math.floor(c.sampleRate * dur);
+      var buf = c.createBuffer(1, len, c.sampleRate);
+      var data = buf.getChannelData(0);
+      for (var i = 0; i < len; i++) data[i] = (Math.random() * 2 - 1) * (1 - i / len);
+      var src = c.createBufferSource();
+      var g = c.createGain();
+      g.gain.value = vol || 0.4;
+      src.buffer = buf;
+      src.connect(g);
+      g.connect(master);
+      src.start();
+    }
+
+    var SIMON = [330, 262, 392, 196];
+
+    return {
+      isOn: function () { return on; },
+      set: function (v) {
+        on = !!v;
+        store("sound", on ? "1" : "0");
+        if (on) ensure();
+      },
+      unlock: function () { if (on) ensure(); },
+      click: function () { tone(1800, 0.03, "square", 0.18); },
+      tick: function () { tone(2400, 0.015, "square", 0.08); },
+      blip: function () { tone(880, 0.08, "square", 0.3); },
+      go: function () { tone(1320, 0.12, "square", 0.45); },
+      good: function () { tone(660, 0.06, "square", 0.35); setTimeout(function () { tone(990, 0.08, "square", 0.35); }, 60); },
+      bad: function () { tone(140, 0.25, "sawtooth", 0.45, 70); },
+      thud: function () { tone(90, 0.18, "sine", 0.9, 45); },
+      win: function () { [523, 659, 784, 1046].forEach(function (f, i) { setTimeout(function () { tone(f, 0.1, "square", 0.35); }, i * 80); }); },
+      chaos: function () { noise(0.9, 0.5); tone(60, 0.9, "sawtooth", 0.5, 30); },
+      simon: function (i, dur) { tone(SIMON[i], dur || 0.3, "triangle", 0.7); }
+    };
+  })();
+
+  function initSound() {
+    var btn = document.getElementById("sound-btn");
+    if (!btn) return;
+    function render() {
+      btn.setAttribute("aria-pressed", SFX.isOn() ? "true" : "false");
+      btn.setAttribute("aria-label", SFX.isOn() ? "Sound on" : "Sound off");
+    }
+    render();
+    btn.addEventListener("click", function () {
+      SFX.set(!SFX.isOn());
+      render();
+      SFX.blip();
+    });
+    // браузеры требуют жест пользователя для звука
+    window.addEventListener("pointerdown", function () { SFX.unlock(); }, { passive: true });
+    // общий «щелчок» на ссылках и кнопках
+    document.addEventListener("pointerdown", function (e) {
+      var el = e.target.closest("a, .game-btn, .catch-start, .type-skip, .copy-id, .dpad button, .footer-top");
+      if (el) SFX.click();
+    }, { passive: true });
+  }
+
+  /* --- наклон телефона: параллакс круга --- */
+  function initTilt() {
+    if (FINE_POINTER || REDUCED || !("DeviceOrientationEvent" in window)) return;
+    var sun = document.getElementById("sun");
+    var shine = document.querySelector(".sun-shine");
+    var hero = document.getElementById("hero");
+    if (!sun) return;
+    var tx = 0, ty = 0, x = 0, y = 0, started = false, base = null;
+
+    function onOrient(e) {
+      if (e.gamma == null || e.beta == null) return;
+      if (base === null) base = e.beta; // как человек держит телефон
+      var gx = Math.max(-1, Math.min(1, e.gamma / 28));
+      var gy = Math.max(-1, Math.min(1, (e.beta - base) / 28));
+      tx = gx * 18;
+      ty = gy * 16;
+    }
+
+    function loop() {
+      x += (tx - x) * 0.08;
+      y += (ty - y) * 0.08;
+      sun.style.setProperty("--px", x.toFixed(2) + "px");
+      sun.style.setProperty("--py", y.toFixed(2) + "px");
+      if (shine) {
+        shine.style.setProperty("--mx", (50 - x * 1.6).toFixed(1) + "%");
+        shine.style.setProperty("--my", (45 - y * 1.6).toFixed(1) + "%");
+      }
+      requestAnimationFrame(loop);
+    }
+
+    function start() {
+      if (started) return;
+      started = true;
+      window.addEventListener("deviceorientation", onOrient);
+      requestAnimationFrame(loop);
+    }
+
+    var D = window.DeviceOrientationEvent;
+    if (typeof D.requestPermission === "function") {
+      // iPhone: разрешение только по тапу — спрашиваем при первом касании первого экрана
+      var ask = function () {
+        hero.removeEventListener("click", ask);
+        D.requestPermission().then(function (r) { if (r === "granted") start(); }).catch(function () {});
+      };
+      if (hero) hero.addEventListener("click", ask);
+    } else {
+      start();
+    }
+  }
+
+  /* E — Simon */
+  function initSimon() {
+    var board = document.getElementById("simon");
+    var startBtn = document.getElementById("simon-start");
+    if (!board || !startBtn) return;
+    var label = document.getElementById("simon-label");
+    var msg = document.getElementById("simon-msg");
+    var bestEl = document.getElementById("simon-best");
+    var pads = board.querySelectorAll(".simon-pad");
+    var best = parseInt(store("simon-best"), 10) || 0;
+    if (best) bestEl.textContent = best;
+    var seq = [];
+    var step = 0;
+    var playing = false;
+    var accepting = false;
+
+    function flash(i, ms) {
+      var pad = pads[i];
+      pad.classList.add("is-lit");
+      SFX.simon(i, ms / 1000);
+      setTimeout(function () { pad.classList.remove("is-lit"); }, ms);
+    }
+
+    function playSeq() {
+      accepting = false;
+      board.classList.add("is-locked");
+      var speed = Math.max(220, 520 - seq.length * 22);
+      var i = 0;
+      label.textContent = seq.length;
+      startBtn.classList.add("is-level");
+      msg.textContent = "watch…";
+      (function next() {
+        if (i >= seq.length) {
+          setTimeout(function () {
+            accepting = true;
+            step = 0;
+            board.classList.remove("is-locked");
+            msg.textContent = "your turn.";
+          }, 150);
+          return;
+        }
+        flash(seq[i], speed);
+        i++;
+        setTimeout(next, speed + 140);
+      })();
+    }
+
+    function addAndPlay() {
+      seq.push(Math.floor(Math.random() * 4));
+      setTimeout(playSeq, 550);
+    }
+
+    function lose() {
+      accepting = false;
+      playing = false;
+      board.classList.add("is-locked", "is-wrong");
+      setTimeout(function () { board.classList.remove("is-wrong"); }, 400);
+      SFX.bad();
+      var level = seq.length - 1;
+      if (level > best) {
+        best = level;
+        store("simon-best", best);
+        bestEl.textContent = best;
+        msg.textContent = "new best: " + level + ". tap start.";
+      } else {
+        msg.textContent = "wrong. you reached " + level + ". tap start.";
+      }
+      label.textContent = "again";
+      startBtn.classList.remove("is-level");
+    }
+
+    pads.forEach(function (pad) {
+      pad.addEventListener("pointerdown", function (e) {
+        e.preventDefault();
+        if (!accepting) return;
+        var i = parseInt(pad.getAttribute("data-pad"), 10);
+        flash(i, 180);
+        if (i !== seq[step]) return lose();
+        step++;
+        if (step === seq.length) {
+          accepting = false;
+          board.classList.add("is-locked");
+          msg.textContent = "nice.";
+          addAndPlay();
+        }
+      });
+    });
+
+    startBtn.addEventListener("click", function () {
+      if (playing) return;
+      playing = true;
+      seq = [];
+      addAndPlay();
+    });
+  }
+
+  /* F — Snake внутри круга */
+  function initSnake() {
+    var canvas = document.getElementById("snake-canvas");
+    var startBtn = document.getElementById("snake-start");
+    if (!canvas || !startBtn) return;
+    var ctx = canvas.getContext("2d");
+    var scoreEl = document.getElementById("snake-score");
+    var bestEl = document.getElementById("snake-best");
+    var best = parseInt(store("snake-best"), 10) || 0;
+    if (best) bestEl.textContent = best;
+
+    var N = 17;
+    var dpr = Math.min(2, window.devicePixelRatio || 1);
+    var SIZE = 340;
+    canvas.width = SIZE * dpr;
+    canvas.height = SIZE * dpr;
+    ctx.scale(dpr, dpr);
+    var CELL = SIZE / N;
+    var R = N / 2;
+
+    function inside(x, y) {
+      var dx = x + 0.5 - R, dy = y + 0.5 - R;
+      return dx * dx + dy * dy <= (R - 0.35) * (R - 0.35);
+    }
+
+    var snake, dir, nextDir, food, timer, running = false, score = 0;
+    var DIRS = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] };
+
+    function placeFood() {
+      var free = [];
+      for (var y = 0; y < N; y++) for (var x = 0; x < N; x++) {
+        if (!inside(x, y)) continue;
+        if (snake.some(function (p) { return p[0] === x && p[1] === y; })) continue;
+        free.push([x, y]);
+      }
+      food = free[Math.floor(Math.random() * free.length)];
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, SIZE, SIZE);
+      ctx.fillStyle = "#efe9df";
+      ctx.beginPath();
+      ctx.arc(SIZE / 2, SIZE / 2, SIZE / 2, 0, Math.PI * 2);
+      ctx.fill();
+      // точки сетки
+      ctx.fillStyle = "rgba(10,9,9,0.12)";
+      for (var y = 0; y < N; y++) for (var x = 0; x < N; x++) {
+        if (inside(x, y)) ctx.fillRect(x * CELL + CELL / 2 - 1, y * CELL + CELL / 2 - 1, 2, 2);
+      }
+      if (food) {
+        ctx.fillStyle = "#e1140c";
+        ctx.beginPath();
+        ctx.arc(food[0] * CELL + CELL / 2, food[1] * CELL + CELL / 2, CELL * 0.38, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      if (snake) {
+        snake.forEach(function (p, i) {
+          ctx.fillStyle = i === 0 ? "#0a0909" : "rgba(10,9,9," + Math.max(0.45, 1 - i * 0.03) + ")";
+          var pad = i === 0 ? 1 : 2;
+          ctx.fillRect(p[0] * CELL + pad, p[1] * CELL + pad, CELL - pad * 2, CELL - pad * 2);
+        });
+      }
+    }
+
+    function tick() {
+      dir = nextDir;
+      var head = [snake[0][0] + dir[0], snake[0][1] + dir[1]];
+      var hitSelf = snake.some(function (p) { return p[0] === head[0] && p[1] === head[1]; });
+      if (!inside(head[0], head[1]) || hitSelf) return die();
+      snake.unshift(head);
+      if (head[0] === food[0] && head[1] === food[1]) {
+        score++;
+        scoreEl.textContent = score;
+        SFX.good();
+        if (navigator.vibrate) { try { navigator.vibrate(15); } catch (e) {} }
+        placeFood();
+        clearInterval(timer);
+        timer = setInterval(tick, Math.max(70, 150 - score * 4));
+      } else {
+        snake.pop();
+      }
+      draw();
+    }
+
+    function die() {
+      running = false;
+      clearInterval(timer);
+      SFX.bad();
+      canvas.animate([{ transform: "translateX(-6px)" }, { transform: "translateX(6px)" }, { transform: "none" }], { duration: 260 });
+      var text = "score " + score;
+      if (score > best) {
+        best = score;
+        store("snake-best", best);
+        bestEl.textContent = best;
+        text = "new best: " + score;
+      }
+      startBtn.textContent = text + " · again";
+      startBtn.hidden = false;
+    }
+
+    function setDir(name) {
+      if (!running) return;
+      var d = DIRS[name];
+      if (!d) return;
+      if (d[0] === -dir[0] && d[1] === -dir[1]) return; // нельзя развернуться в себя
+      nextDir = d;
+    }
+
+    startBtn.addEventListener("click", function () {
+      var c = Math.floor(N / 2);
+      snake = [[c, c], [c - 1, c], [c - 2, c]];
+      dir = nextDir = DIRS.right;
+      score = 0;
+      scoreEl.textContent = "0";
+      placeFood();
+      running = true;
+      startBtn.hidden = true;
+      draw();
+      clearInterval(timer);
+      timer = setInterval(tick, 150);
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (!running) return;
+      var map = { ArrowUp: "up", ArrowDown: "down", ArrowLeft: "left", ArrowRight: "right", w: "up", s: "down", a: "left", d: "right", W: "up", S: "down", A: "left", D: "right" };
+      if (document.activeElement && document.activeElement.id === "type-input") return;
+      var name = map[e.key];
+      if (name) {
+        e.preventDefault();
+        setDir(name);
+      }
+    });
+
+    document.querySelectorAll(".dpad [data-dir]").forEach(function (b) {
+      b.addEventListener("pointerdown", function (e) {
+        e.preventDefault();
+        setDir(b.getAttribute("data-dir"));
+      });
+    });
+
+    var sx = 0, sy = 0;
+    canvas.addEventListener("touchstart", function (e) {
+      var t = e.touches[0];
+      sx = t.clientX;
+      sy = t.clientY;
+    }, { passive: true });
+    canvas.addEventListener("touchmove", function (e) {
+      if (running) e.preventDefault();
+    }, { passive: false });
+    canvas.addEventListener("touchend", function (e) {
+      var t = e.changedTouches[0];
+      var dx = t.clientX - sx, dy = t.clientY - sy;
+      if (Math.max(Math.abs(dx), Math.abs(dy)) < 18) return;
+      if (Math.abs(dx) > Math.abs(dy)) setDir(dx > 0 ? "right" : "left");
+      else setDir(dy > 0 ? "down" : "up");
+    });
+
+    snake = null;
+    food = null;
+    draw();
+  }
+
+  /* G — тест скорости печати */
+  function initType() {
+    var phraseEl = document.getElementById("type-phrase");
+    var input = document.getElementById("type-input");
+    if (!phraseEl || !input) return;
+    var wpmEl = document.getElementById("type-wpm");
+    var accEl = document.getElementById("type-acc");
+    var bestEl = document.getElementById("type-best");
+    var skip = document.getElementById("type-skip");
+    var best = parseInt(store("type-best"), 10) || 0;
+    if (best) bestEl.textContent = best + " wpm";
+
+    var PHRASES = [
+      "red sun over grey concrete",
+      "stay quiet and keep moving",
+      "the circle never stops spinning",
+      "press start and do not look back",
+      "black ink on a red page",
+      "every second on this page is counted",
+      "nobody reads the fine print",
+      "the stairs go down further than you think",
+      "turn the sound on and break the button",
+      "slow is smooth and smooth is fast"
+    ];
+    var phrase = "";
+    var last = -1;
+    var t0 = 0;
+    var typedTotal = 0;
+    var errors = 0;
+    var done = false;
+
+    function esc(c) {
+      return c === "<" ? "&lt;" : c === ">" ? "&gt;" : c === "&" ? "&amp;" : c;
+    }
+
+    function render() {
+      var v = input.value;
+      var html = "";
+      for (var i = 0; i < phrase.length; i++) {
+        var c = esc(phrase[i]);
+        if (i < v.length) html += '<span class="' + (v[i] === phrase[i] ? "ok" : "bad") + '">' + c + "</span>";
+        else if (i === v.length) html += '<span class="cur">' + c + "</span>";
+        else html += c;
+      }
+      phraseEl.innerHTML = html;
+    }
+
+    function newPhrase() {
+      var i;
+      do { i = Math.floor(Math.random() * PHRASES.length); } while (i === last);
+      last = i;
+      phrase = PHRASES[i];
+      input.value = "";
+      input.disabled = false;
+      input.classList.remove("is-done");
+      t0 = 0;
+      typedTotal = 0;
+      errors = 0;
+      done = false;
+      wpmEl.textContent = "0";
+      accEl.textContent = "100%";
+      render();
+    }
+
+    input.addEventListener("input", function () {
+      if (done) return;
+      var v = input.value;
+      if (!t0 && v.length) t0 = performance.now();
+      var lastChar = v.length - 1;
+      if (lastChar >= 0 && v.length > typedTotal) {
+        if (v[lastChar] !== phrase[lastChar]) errors++;
+        SFX.tick();
+      }
+      typedTotal = Math.max(typedTotal, v.length);
+      render();
+      var mins = (performance.now() - t0) / 60000;
+      var wpm = mins > 0 ? Math.round((v.length / 5) / mins) : 0;
+      var acc = typedTotal ? Math.max(0, Math.round((1 - errors / typedTotal) * 100)) : 100;
+      wpmEl.textContent = wpm;
+      accEl.textContent = acc + "%";
+      if (v === phrase) {
+        done = true;
+        input.classList.add("is-done");
+        input.blur();
+        SFX.win();
+        if (wpm > best) {
+          best = wpm;
+          store("type-best", best);
+          bestEl.textContent = best + " wpm";
+          phraseEl.innerHTML = '<span class="ok">new best — ' + wpm + " wpm.</span> tap “new phrase”.";
+        } else {
+          phraseEl.innerHTML = '<span class="ok">' + wpm + " wpm, " + acc + "% accuracy.</span> tap “new phrase”.";
+        }
+      }
+    });
+
+    skip.addEventListener("click", newPhrase);
+    newPhrase();
+  }
+
   function safe(fn) {
     try { fn(); } catch (e) { if (window.console) console.warn(e); }
   }
@@ -3061,6 +3958,11 @@ body { font-size: clamp(0.86rem, 1.5vw, 0.95rem); }
   safe(initDanger);
   safe(initStamps);
   safe(initCopy);
+  safe(initSound);
+  safe(initTilt);
+  safe(initSimon);
+  safe(initSnake);
+  safe(initType);
 })();
 
 </script>
