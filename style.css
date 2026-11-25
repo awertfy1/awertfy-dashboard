@@ -854,9 +854,12 @@ button {
 }
 
 .section-title {
-  font-family: var(--slav);
+  font-family: var(--cond);
+  font-weight: 700;
   font-size: clamp(2rem, 6vw, 3.6rem);
   line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .section-head--dark .section-num { color: var(--black); }
