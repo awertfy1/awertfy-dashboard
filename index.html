@@ -2304,6 +2304,15 @@ a.quote-block:active #quote-text { color: var(--red); }
   .logo { letter-spacing: 0.06em; }
 }
 
+/* одинаковая высота кнопок в шапке */
+.sound-btn,
+.top-cta { height: 44px; min-height: 44px; }
+.sound-btn { width: 44px; flex-shrink: 0; }
+@media (max-width: 700px) {
+  .sound-btn { width: 44px; height: 44px; }
+  .top-cta { height: 44px; }
+}
+
 </style>
   <noscript>
     <style>
@@ -2391,12 +2400,6 @@ a.quote-block:active #quote-text { color: var(--red); }
             <span class="muted">balance</span>
             <b><span class="cur">$</span><span class="balance-slot"><span class="balance-reel" id="balance-reel"><span class="balance-num">15</span></span></span></b>
           </p>
-          <a class="quote-block" href="https://music.yandex.ru/playlists/lk.5f6472e1-83b2-4dea-b396-37c7a08ac667?utm_source=desktop&utm_medium=copy_link" target="_blank" rel="noopener noreferrer">
-            <span class="np-label"><i></i>now playing<em>open playlist ↗</em></span>
-            <span class="quote-mark" aria-hidden="true">▶</span><span id="quote-text"></span><span class="quote-cursor" aria-hidden="true">|</span>
-            <br />
-            <span class="quote-author" id="quote-author"></span><span class="quote-cursor author-cursor" aria-hidden="true">|</span>
-          </a>
         </div>
 
         <div class="bio-col links reveal">
